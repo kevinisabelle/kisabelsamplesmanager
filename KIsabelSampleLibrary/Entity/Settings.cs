@@ -6,7 +6,9 @@ namespace KIsabelSampleLibrary.Entity
 {
     public class Settings
     {
-        List<string> SamplePaths { get; set; }
+        public List<string> SamplePaths { get; set; }
+        public string AudioInterface { get; set; }
+        
 
         public Settings()
         {
