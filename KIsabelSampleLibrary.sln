@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KIsabelSampleLibrary", "KIsabelSampleLibrary\KIsabelSampleLibrary.csproj", "{36DAA72D-D50E-4AE4-BD28-7CAB2C9B226C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36DAA72D-D50E-4AE4-BD28-7CAB2C9B226C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36DAA72D-D50E-4AE4-BD28-7CAB2C9B226C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36DAA72D-D50E-4AE4-BD28-7CAB2C9B226C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36DAA72D-D50E-4AE4-BD28-7CAB2C9B226C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EF364541-83A3-4F5F-9972-50EAB0835588}
+	EndGlobalSection
+EndGlobal
