@@ -8,13 +8,26 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="150" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button>Play</Button>
-        <Label Content=""></Label>
+        <Button Name="BtnPlay" Click="Button_Click_1" Grid.Column="0">Play</Button>
+        <Button Name="BtnStop" Grid.Column="1">Stop</Button>
+        <TextBlock Name="TxtGenres" Grid.Column="3">
+            genre
+        </TextBlock>
+        <TextBlock Name="TxtTags" Grid.Column="4">
+            tags
+        </TextBlock>
+        <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="5"></Image>
+        <Label Name="LblDuration" Grid.Row="0" Grid.Column="2">ms</Label>
+        <Label Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="5">File gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</Label>
          </Grid>
 </UserControl>

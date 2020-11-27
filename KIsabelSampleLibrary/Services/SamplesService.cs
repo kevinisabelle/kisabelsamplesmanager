@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace KIsabelSampleLibrary.Services
 {
@@ -63,16 +64,36 @@ namespace KIsabelSampleLibrary.Services
             return DbContext.Samples.FirstOrDefault(s => (s.libBaseFolder + s.path + s.filename) == fullpath);
         }
 
+        private Thread AnalysisThread = null;
+        public struct RefreshParams
+        {
+            public string path;
+            public UpdateFeedback updateFeedback;
+        }
+
         public void RefreshDatabase(string path, UpdateFeedback updateFeedback = null)
         {
-            List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(path, path);
+            AnalysisThread = new Thread(RefreshDatabaseThread);
+
+            AnalysisThread.Start(new RefreshParams()
+            {
+                path = path,
+                updateFeedback = updateFeedback
+            });
+        }
+
+        public void RefreshDatabaseThread(object updateFeedbackp)
+        {
+            RefreshParams updateFeedback = (RefreshParams)updateFeedbackp;
+
+            List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(updateFeedback.path, updateFeedback.path);
             foreach (var sample in samplesFiles)
             {
                 AddSampleIfNotExist(sample);
 
-                if (updateFeedback != null)
+                if (updateFeedback.updateFeedback != null)
                 {
-                    updateFeedback.Invoke(sample);
+                    updateFeedback.updateFeedback.Invoke(sample);
                 }
             }
         }

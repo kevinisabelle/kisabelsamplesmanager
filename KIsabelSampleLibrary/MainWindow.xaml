@@ -27,7 +27,7 @@
             <Button Height="30" Click="Button_Click_1">Refresh Libraries</Button>
             <Button Height="30" Click="Button_Click_2">Refresh UI</Button>
         </StackPanel>
-        
+        <TextBlock Name="TxtLog" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap"></TextBlock>
         
         <GroupBox Grid.Row="1" Header="Libraries">
             <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" MouseUp="LibraryTreeView_MouseDoubleClick">
@@ -43,7 +43,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Samples" Grid.Column="1" Grid.Row="1">
-            <ListView Name="SamplesList"   >
+            <ListView  Name="SamplesList" SelectionChanged="SamplesList_SelectionChanged"  >
                
                 <ListViewItem Content="test"></ListViewItem>
             </ListView>

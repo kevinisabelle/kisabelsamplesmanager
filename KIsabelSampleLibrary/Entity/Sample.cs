@@ -60,7 +60,7 @@ namespace KIsabelSampleLibrary.Entity
 
         public string GetFullPath()
         {
-            return libBaseFolder + path + filename;
+            return libBaseFolder + path + "\\" + filename;
         }
 
         public bool IsSameSample(Sample other)

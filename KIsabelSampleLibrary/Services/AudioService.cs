@@ -52,7 +52,7 @@ namespace KIsabelSampleLibrary.Services
 
             device.Play();
 
-            device.Stop();
+            //device.Stop();
         }
     }
 }

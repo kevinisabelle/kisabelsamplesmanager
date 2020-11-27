@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,7 +57,26 @@ namespace KIsabelSampleLibrary
 
         public void RefreshLibraryDb()
         {
-            App.Services.Samples().RefreshDatabase(App.Services.Settings().Settings.SamplePaths.First());
+            App.Services.Samples().RefreshDatabase(App.Services.Settings().Settings.SamplePaths.First(), FeedBack);
+        }
+
+        public delegate void UpdateTextCallback(Sample sample);
+
+        public void FeedBack(Sample sample)
+        {
+           
+            if (sample != null)
+            {
+                TxtLog.Dispatcher.Invoke(
+                    new UpdateTextCallback(SetSample),
+                    new object[] { sample }
+                );
+            }
+        }
+
+        public void SetSample(Sample sample)
+        {
+            TxtLog.Text = sample.ToString();
         }
 
         private void AddTreeElement(TreeViewItem item, FolderTreeElement element)
@@ -113,6 +133,11 @@ namespace KIsabelSampleLibrary
         private void LibraryTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             RefreshSamplesList();
+        }
+
+        private void SamplesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SamplePlayer.Sample = (Sample)SamplesList.SelectedItem;
         }
     }
 }
