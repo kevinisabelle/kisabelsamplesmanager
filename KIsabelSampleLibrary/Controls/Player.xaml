@@ -15,5 +15,6 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Button>Play</Button>
+        <Label Content=""></Label>
          </Grid>
 </UserControl>

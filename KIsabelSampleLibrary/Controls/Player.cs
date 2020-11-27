@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KIsabelSampleLibrary.Entity;
+using System;
 using System.Windows.Controls;
 
 namespace KIsabelSampleLibrary.Controls
@@ -14,5 +15,7 @@ namespace KIsabelSampleLibrary.Controls
         public string Title { get; set; }
 
         public int MaxLength { get; set; }
+
+        public Sample Sample { get; set; }
     }
 }

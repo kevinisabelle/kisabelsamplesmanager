@@ -44,6 +44,8 @@
             </ListView>
         </GroupBox>
        
-        <Controls:Player Grid.Column="1" Grid.Row="2"  />
+        <Controls:Player Grid.Column="1" Grid.Row="2" 
+                         Sample="null"
+                         />
     </Grid>
 </Window>
