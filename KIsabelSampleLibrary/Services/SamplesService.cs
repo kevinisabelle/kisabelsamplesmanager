@@ -1,6 +1,7 @@
 ﻿using KIsabelSampleLibrary.Entity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -91,6 +92,31 @@ namespace KIsabelSampleLibrary.Services
         {
             DbContext.Update(sample);
             DbContext.SaveChanges();
+        }
+
+        public FolderTree GetFolderTree(string basePath)
+        {
+            FolderTree tree = new FolderTree();
+            FolderTreeElement root = new FolderTreeElement() { Path = basePath };
+            root.Elements = GetChildren(root);
+            tree.Elements = new List<FolderTreeElement>() { root };
+            return tree;
+        }
+
+        private List<FolderTreeElement> GetChildren(FolderTreeElement element)
+        {
+            List<FolderTreeElement> children = new List<FolderTreeElement>();
+
+            string[] childrenPaths = Directory.GetDirectories(element.Path);
+
+            foreach (string path in childrenPaths)
+            {
+                FolderTreeElement elementChild = new FolderTreeElement() { Path = path};
+                elementChild.Elements = GetChildren(elementChild);
+                children.Add(elementChild);
+            }
+
+            return children;
         }
     }
 }

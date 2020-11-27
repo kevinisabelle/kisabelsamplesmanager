@@ -13,6 +13,11 @@ namespace KIsabelSampleLibrary.Services
         {
             if (File.Exists(path))
             {
+                if (!path.EndsWith(".wav"))
+                {
+                    return null;
+                }
+                 
                 AudioFileReader reader = new AudioFileReader(path);
 
                 return new Sample()
@@ -37,7 +42,12 @@ namespace KIsabelSampleLibrary.Services
 
             foreach (string file in files)
             {
-                result.Add(AnalyzeFile(file, libBasePath));
+                Sample sample = AnalyzeFile(file, libBasePath);
+
+                if (sample != null)
+                {
+                    result.Add(sample);
+                }
             }
 
             foreach (string directories in Directory.GetDirectories(path))

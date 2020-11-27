@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KIsabelSampleLibrary"
+
         mc:Ignorable="d"
         Title="K Isabel - Samples Db" 
         Height="450" Width="800" 
@@ -11,7 +11,7 @@
         WindowState="Maximized" FontSize="16">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
@@ -22,8 +22,15 @@
         </Grid.RowDefinitions>
         <TextBlock Margin="10" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="20" Grid.Row="0">K Isabel 
             <LineBreak></LineBreak> Samples Manager</TextBlock>
+        <StackPanel Grid.Row="2" >
+            <Button Height="30" Click="Button_Click">Settings</Button>
+            <Button Height="30" Click="Button_Click_1">Refresh Libraries</Button>
+            <Button Height="30" Click="Button_Click_2">Refresh UI</Button>
+        </StackPanel>
+        
+        
         <GroupBox Grid.Row="1" Header="Libraries">
-            <TreeView>
+            <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" MouseUp="LibraryTreeView_MouseDoubleClick">
                 <TreeViewItem Header="test">
                     <TreeViewItem Header="test2"></TreeViewItem>
                 </TreeViewItem>
@@ -36,16 +43,14 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Samples" Grid.Column="1" Grid.Row="1">
-            <ListView >
-                <ListView.View>
-                    <GridView AllowsColumnReorder="True"></GridView>
-                </ListView.View>
+            <ListView Name="SamplesList"   >
+               
                 <ListViewItem Content="test"></ListViewItem>
             </ListView>
         </GroupBox>
        
-        <Controls:Player Grid.Column="1" Grid.Row="2" 
-                         Sample="null"
+        <Controls:Player x:Name="SamplePlayer" Grid.Column="1" Grid.Row="2" 
+                         Sample="{x:Null}"
                          />
     </Grid>
 </Window>
