@@ -5,25 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KIsabelSampleLibrary"
         mc:Ignorable="d"
-        Title="K Isabel - Samples Db" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" FontSize="14">
-    <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
-
-        <StackPanel Width="200" Orientation="Vertical" FlowDirection="LeftToRight">
-            <Label>test</Label>
-            <TreeView  />
-        </StackPanel>
-
-        <GroupBox MinWidth="400" Header="Samples">
-            <StackPanel Orientation="Vertical" FlowDirection="LeftToRight">
-                <Label>test</Label>
-                <ListView x:Name="listView" Height="100">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+        Title="K Isabel - Samples Db" 
+        Height="450" Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Maximized" FontSize="20">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0">Test</TextBlock>
+        <GroupBox Grid.Column="1" Header="Search">
+            <StackPanel Orientation="Horizontal">
+            <Label>Query</Label>
+            <TextBox Width="300"></TextBox>
             </StackPanel>
         </GroupBox>
-    </StackPanel>
+    </Grid>
 </Window>
