@@ -14,7 +14,7 @@ namespace KIsabelSampleLibrary.Services
 
         public SettingsService()
         {
-
+            LoadSettings();
         }
 
         public void LoadSettings()

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\UnitTests\\UnitTests.csproj": {}
+    "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\UnitTests\\UnitTests.csproj": {}
   },
   "projects": {
-    "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj": {
+    "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj",
+        "projectUniqueName": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj",
         "projectName": "KIsabelSampleLibrary",
-        "projectPath": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj",
-        "packagesPath": "C:\\Users\\kevin\\.nuget\\packages\\",
-        "outputPath": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\obj\\",
+        "projectPath": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj",
+        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+        "outputPath": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,10 +25,11 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -40,6 +41,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -88,24 +90,24 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\UnitTests\\UnitTests.csproj": {
+    "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\UnitTests\\UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\UnitTests\\UnitTests.csproj",
+        "projectUniqueName": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\UnitTests\\UnitTests.csproj",
         "projectName": "UnitTests",
-        "projectPath": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\UnitTests\\UnitTests.csproj",
-        "packagesPath": "C:\\Users\\kevin\\.nuget\\packages\\",
-        "outputPath": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\UnitTests\\obj\\",
+        "projectPath": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\UnitTests\\UnitTests.csproj",
+        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+        "outputPath": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\UnitTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -113,13 +115,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj": {
-                "projectPath": "K:\\Dev\\projects\\kisabelsamplelib\\KIsabelSampleLibrary\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj"
+              "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj": {
+                "projectPath": "K:\\Dev\\projects\\kisabelsamplesmanager\\kisabelsamplesmanager\\KIsabelSampleLibrary\\KIsabelSampleLibrary.csproj"
               }
             }
           }
@@ -132,6 +135,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "MSTest.TestAdapter": {
               "target": "Package",
@@ -168,7 +172,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

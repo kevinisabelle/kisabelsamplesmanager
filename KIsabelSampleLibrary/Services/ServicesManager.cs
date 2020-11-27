@@ -12,12 +12,15 @@ namespace KIsabelSampleLibrary.Services
         private SettingsService _Settings { get; set; }
         private DatabaseContext _dbContext { get; set; }
 
+        private AudioService _audio { get; set; }
+
         public ServicesManager()
         {
             _dbContext = new DatabaseContext();
             _dbContext.Database.Migrate();
             _Settings = new SettingsService();
             _Samples = new SamplesService(_dbContext, _Settings);
+            _audio = new AudioService(_Settings);
             
         }
 
@@ -30,5 +33,16 @@ namespace KIsabelSampleLibrary.Services
         {
             return _Settings;
         }
+
+        public DatabaseContext Db()
+        {
+            return _dbContext;
+        }
+
+        public AudioService Audio()
+        {
+            return _audio;
+        }
+
     }
 }
