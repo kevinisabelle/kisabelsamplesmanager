@@ -47,11 +47,12 @@ namespace KIsabelSampleLibrary.Services
 
             WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath());
             WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
-
+            volumeStream.Volume = 1;
             device.Init(volumeStream);
 
             device.Play();
 
+            device.Stop();
         }
     }
 }

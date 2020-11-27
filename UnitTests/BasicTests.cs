@@ -90,5 +90,16 @@ namespace UnitTests
            // List<DirectSoundOut> devices = services.Audio().GetInterfacesForSelectedDriver();
 
         }
+
+        [TestMethod]
+        public void TestRefreshDatabase()
+        {
+            ServicesManager services = new ServicesManager();
+            services.Settings().Settings.SamplePaths.Add(testdatapath);
+            services.Settings().Settings.AudioDriver = AudioService.AudioDriverType.DirectSoundOut;
+            services.Settings().SaveSettings();
+
+            services.Samples().RefreshDatabase(services.Settings().Settings.SamplePaths.First());
+        }
     }
 }
