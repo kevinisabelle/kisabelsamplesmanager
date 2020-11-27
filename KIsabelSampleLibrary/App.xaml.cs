@@ -1,4 +1,5 @@
 ﻿using KIsabelSampleLibrary.Entity;
+using KIsabelSampleLibrary.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,11 @@ namespace KIsabelSampleLibrary
     /// </summary>
     public partial class App : Application
     {
+        public static ServicesManager Services { get; set; }
+     
         public App()
         {
-            using (DatabaseContext dbContext = new DatabaseContext())
-            {
-                dbContext.Database.Migrate();
-            }
+            Services = new ServicesManager();
         }
     }
 }
