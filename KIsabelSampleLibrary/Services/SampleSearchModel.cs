@@ -18,6 +18,7 @@ namespace KIsabelSampleLibrary.Services
         public string[] genres = null;
         public ConnectionType genresSearchType = ConnectionType.AND;
         public bool? favorites = null;
+        public string path = null;
 
     }
 }

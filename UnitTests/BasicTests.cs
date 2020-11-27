@@ -10,7 +10,7 @@ namespace UnitTests
     [TestClass]
     public class BasicTests
     {
-        public string testdatapath = "../../../testdata/";
+        public string testdatapath = "../../../../testdata/";
 
         [TestMethod]
         public void SaveAndLoadSettings()
@@ -100,6 +100,31 @@ namespace UnitTests
             services.Settings().SaveSettings();
 
             services.Samples().RefreshDatabase(services.Settings().Settings.SamplePaths.First());
+
+            string tag1 = "tag1";
+            string tag2 = "tag2";
+
+            string genre1 = "genre1";
+            string genre2 = "genre2";
+
+            List<Sample> samples = services.Samples().FindSamples(new SampleSearchModel());
+
+            samples.ForEach(s =>
+            {
+                s.SetTags(new List<string>() { tag1, tag2 });
+                s.SetGenres(new List<string>() { genre1, genre2 });
+                services.Samples().SaveSample(s);
+            });
+
+            List<string> tags = services.Samples().GetTags();
+            List<string> genre = services.Samples().GetGenres();
+
+            samples = services.Samples().FindSamples(new SampleSearchModel()
+            {
+                path = "\\Lush Dancehall ft. Patexx"
+            });
+
+            Assert.AreEqual(samples.Count,8);
         }
     }
 }

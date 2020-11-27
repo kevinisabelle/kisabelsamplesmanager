@@ -23,6 +23,7 @@ namespace KIsabelSampleLibrary.Services
         public List<string> GetTags()
         {
             return DbContext.Samples
+                .ToList()
                 .SelectMany(s => s.GetTags())
                 .Distinct()
                 .OrderBy(s => s)
@@ -32,6 +33,7 @@ namespace KIsabelSampleLibrary.Services
         public List<string> GetGenres()
         {
             return DbContext.Samples
+                .ToList()
                 .SelectMany(s => s.GetGenres())
                 .Distinct()
                 .OrderBy(s => s)
@@ -40,11 +42,16 @@ namespace KIsabelSampleLibrary.Services
 
         public List<Sample> FindSamples(SampleSearchModel searchParameters)
         {
-            IQueryable<Sample> result = DbContext.Samples.Where(s => true);
+            IQueryable<Sample> result = DbContext.Samples.AsQueryable() ;
 
-            if (searchParameters.query != "")
+            if (searchParameters.query != null)
             {
-                result = result.Where(s => s.GetFullPath().Contains(searchParameters.query));
+                result = result.Where(s => s.filename.Contains(searchParameters.query));
+            }
+
+            if (searchParameters.path != null)
+            {
+                result = result.Where(s => s.path.StartsWith(searchParameters.path));
             }
 
             return result.ToList();
@@ -52,7 +59,7 @@ namespace KIsabelSampleLibrary.Services
 
         public Sample GetSampleFromFullPath(string fullpath)
         {
-            return DbContext.Samples.FirstOrDefault(s => s.GetFullPath() == fullpath);
+            return DbContext.Samples.FirstOrDefault(s => (s.libBaseFolder + s.path + s.filename) == fullpath);
         }
 
         public void RefreshDatabase(string path, UpdateFeedback updateFeedback = null)
