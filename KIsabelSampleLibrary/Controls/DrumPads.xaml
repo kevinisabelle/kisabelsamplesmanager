@@ -4,10 +4,13 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
          mc:Ignorable="d"  
-         d:DesignHeight="800" FontSize="12" d:DesignWidth="500">
+         d:DesignHeight="800" FontSize="12" d:DesignWidth="400">
     <Grid Name="PadsGrid">
         <Grid.RowDefinitions>
            
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -25,19 +28,23 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-           
-           
         </Grid.ColumnDefinitions>
+        
         <ToolBar>
-            <Button>Save</Button>
-            <Button>Load</Button>
-            <Separator></Separator>
-
-            <TextBox Width="150" Name="PadsKitName">N/A</TextBox>
-            <ComboBox Width="150"></ComboBox>
-
+            <Label FontWeight="Bold" FontSize="14" VerticalAlignment="Center">Drum Kit</Label>
+            <Label Name="LblKitId" Width="50" VerticalAlignment="Center"></Label>
+            <TextBox Name="TxtKitName" Width="200">N/A</TextBox>
+            <Button Name="BtnAddNew" Click="BtnAddNew_Click">+</Button>
         </ToolBar>
+        
+        <ToolBar Grid.Row="1">
+            <Button Name="BtnLoadKit" Width="60" Click="BtnLoadKit_Click">Load</Button>
+            <ComboBox Name="CboKits" Width="230"></ComboBox>
+            <Button Name="BtnSave" Width="60" Click="BtnSave_Click">Save</Button>
+        </ToolBar>
+        
     </Grid>
 </UserControl>

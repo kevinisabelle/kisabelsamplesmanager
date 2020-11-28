@@ -10,6 +10,15 @@ namespace KIsabelSampleLibrary.Entity
 
         public string Name { get; set; }
 
+        public string IdName { 
+            get
+            {
+                return Id + " - " + Name;
+            }
+
+            
+        }
+
         public string Slot0 { get; set; }
         public string Slot1 { get; set; }
         public string Slot2 { get; set; }
