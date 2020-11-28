@@ -5,26 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KIsabelSampleLibrary.Controls"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800">
-    <Grid>
+        Title="Settings" Height="650" Width="600" WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="33"/>
+            <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label>Samples locations</Label>
-        <TextBox Grid.Column="1" MaxLines="4" Name="SamplesPaths"></TextBox>
-        <Label Grid.Row="1">Audio device</Label>
-        <StackPanel Margin="10" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+
+        <Label Grid.Row="0">Audio device</Label>
+
+        <Label Grid.Row="1">Samples locations</Label>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Button Name="BtnAddFolder" Click="BtnAddFolder_Click">Add</Button>
+            <StackPanel  Name="SamplesFoldersPanel" >
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="190,10,0,10" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Width="200">
             <Button Width="100" Click="Button_Click" >OK</Button>
             <Button Width="100" >Cancel</Button>
         </StackPanel>
-       
+
     </Grid>
 </Window>

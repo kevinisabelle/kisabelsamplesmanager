@@ -1,9 +1,6 @@
 ﻿using KIsabelSampleLibrary.Entity;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace KIsabelSampleLibrary.Services
 {
@@ -30,10 +27,8 @@ namespace KIsabelSampleLibrary.Services
 
         public void SaveSettings()
         {
-            Settings.SanitizePaths();
+            
             File.WriteAllText(settingsfile, JsonConvert.SerializeObject(Settings));
         }
-
-
     }
 }

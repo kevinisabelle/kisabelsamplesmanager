@@ -3,6 +3,7 @@ using KIsabelSampleLibrary.Entity;
 using KIsabelSampleLibrary.Services;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -30,6 +31,7 @@ namespace KIsabelSampleLibrary
         public MainWindow()
         {
             InitializeComponent();
+            RefreshUI();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -42,29 +44,36 @@ namespace KIsabelSampleLibrary
         {
             LibraryTreeView.Items.Clear();
 
-            FolderTree tree = App.Services.Samples().GetFolderTree(App.Services.Settings().Settings.SamplePaths.FirstOrDefault());
+            FolderTree tree = App.Services.Samples().GetFolderTree(App.Services.Samples().GetFolders());
 
-            TreeViewItem rootItem = new TreeViewItem();
-            
-            LibraryTreeView.Items.Add(rootItem);
-            rootItem.Header = App.Services.Settings().Settings.SamplePaths.FirstOrDefault();
-            AddTreeElement(rootItem, tree.Elements.First());
+            foreach (var rootItemE in tree.Elements)
+            {
+                TreeViewItem rootItem = new TreeViewItem();
+
+                LibraryTreeView.Items.Add(rootItem);
+                rootItem.ToolTip = rootItemE.Folder.BasePath;
+                rootItem.Header = rootItemE.Folder.Name + " (" + rootItemE.Folder.BasePath + ")";
+                AddTreeElement(rootItem, rootItemE);
+            }
 
             RefreshSamplesList();
         }
 
+        private List<SamplesFolder> foldersTemp;
+
         public void RefreshLibraryDb()
         {
-            App.Services.Samples().RefreshDatabase(App.Services.Settings().Settings.SamplePaths.First(), FeedBack);
+            foldersTemp = App.Services.Samples().GetFolders();
+            App.Services.Samples().RefreshDatabase(FeedBack);
         }
         
-        public void FeedBack(Sample sample, long currentcount, long totalCount, RefreshDataStatus status)
+        public void FeedBack(Sample sample, long currentcount, long totalCount, SamplesFolder folder, int currentFolder, int totalFolders, RefreshDataStatus status)
         {
             try
             {
                 TxtLog.Dispatcher.Invoke(
                     new UpdateFeedback(SetSample),
-                    new object[] { sample, currentcount, totalCount, status }
+                    new object[] { sample, currentcount, totalCount, folder, currentFolder, totalFolders, status }
                 );
             } catch(Exception e)
             {
@@ -72,9 +81,9 @@ namespace KIsabelSampleLibrary
             }
         }
 
-        public void SetSample(Sample sample, long currentcount, long totalCount, RefreshDataStatus status)
+        public void SetSample(Sample sample, long currentcount, long totalCount, SamplesFolder folder, int currentFolder, int totalFolders, RefreshDataStatus status)
         {
-            TxtLog.Text = status + "\n" + currentcount + " / " + totalCount + "\n" + sample?.GetFullPath();
+            TxtLog.Text = status + "\n" + currentcount + " / " + totalCount + "\n" + sample?.GetFullPath(foldersTemp);
         }
 
         private void AddTreeElement(TreeViewItem item, FolderTreeElement element)
@@ -114,7 +123,8 @@ namespace KIsabelSampleLibrary
                 query = TxtQuery.Text == "" ? null : TxtQuery.Text,
                 genres = TxtGenres.Text == "" ? null : TxtGenres.Text.Split(" "),
                 tags = TxtTags.Text == "" ? null : TxtTags.Text.Split(" "),
-                favorites = ChkFavorites.IsChecked
+                favorites = ChkFavorites.IsChecked,
+                missingFiles = ChkMissingFiles.IsChecked,
             })
                 .OrderBy(s => s.filename).ToList();
 
@@ -126,13 +136,16 @@ namespace KIsabelSampleLibrary
                 ListViewItem item = new ListViewItem()
                 {
                     Content = sample,
-                    
+                    Foreground = new SolidColorBrush(sample.isFilePresent ? Colors.Black : Colors.Red),
+                    FontWeight = sample.favorite ? FontWeights.Bold : FontWeights.Normal
                 };
 
                 item.PreviewMouseRightButtonDown += ListBox_PreviewMouseLeftButtonDown;
 
                 SamplesList.Items.Add(item);
             }
+
+            SampleGroupBox.Header = "Samples (" + SamplesList.Items.Count + ")"; 
         }
 
         private void LibraryTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -164,7 +177,7 @@ namespace KIsabelSampleLibrary
         {
             ListViewItem parent = (ListViewItem)sender;
             ListViewItem  dragSource = parent;
-            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
+            object data = GetDataFromListBox(dragSource);
 
             if (data != null)
             {
@@ -172,7 +185,7 @@ namespace KIsabelSampleLibrary
             }
         }
 
-        private static object GetDataFromListBox(ListViewItem source, Point point)
+        private static object GetDataFromListBox(ListViewItem source)
         {
             return source.Content as Sample;
 
@@ -192,9 +205,46 @@ namespace KIsabelSampleLibrary
 
             object selectedItem = listView.SelectedItem;
 
-            RefreshUI();
+            RefreshSamplesList();
 
             listView.SelectedItem = selectedItem;
+        }
+
+        private void ResetFolderSelection()
+        {
+            if (LibraryTreeView.SelectedItem == null)
+            {
+                RefreshSamplesList();
+                return;
+            }
+
+            ((TreeViewItem)(LibraryTreeView.SelectedItem)).IsSelected = false;
+            
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            ResetFolderSelection();
+        }
+
+        private void BtnReset_Click(object sender, RoutedEventArgs e)
+        {
+            TxtQuery.Text = "";
+            TxtGenres.Text = "";
+            TxtTags.Text = "";
+            ChkFavorites.IsChecked = false;
+            
+            ResetFolderSelection();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                App.Services.Samples().RemoveMissingFiles();
+                RefreshUI();
+            }
         }
     }
 }

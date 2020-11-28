@@ -1,6 +1,7 @@
 ﻿using KIsabelSampleLibrary.Entity;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,25 +50,34 @@ namespace KIsabelSampleLibrary.Controls
                 return;
             }
 
-            LblFilename.Text = _Sample.GetFullPath();
+            string sampleFullPath = _Sample.GetFullPath(App.Services.Samples().GetFolders());
+
+            LblFilename.Text = sampleFullPath;
             TxtTags.Text = _Sample.tags;
             TxtGenres.Text = _Sample.genres;
             LblDuration.Content = _Sample.lengthMs + "ms";
 
-            WaveFormRenderer renderer = new WaveFormRenderer();
-            System.Drawing.Image image = renderer.Render(_Sample.GetFullPath(), new StandardWaveFormRendererSettings()
+            if (File.Exists(sampleFullPath))
             {
-             Width= 2000,
-                PixelsPerPeak= 2,
-                BackgroundColor = System.Drawing.Color.Black,
-                BottomPeakPen = Pens.White,
-                TopPeakPen = Pens.White,
-                TopHeight = 100,
-                BottomHeight = 100
-            });
+                WaveFormRenderer renderer = new WaveFormRenderer();
+                System.Drawing.Image image = renderer.Render(sampleFullPath, new StandardWaveFormRendererSettings()
+                {
+                    Width = 2000,
+                    PixelsPerPeak = 2,
+                    BackgroundColor = System.Drawing.Color.Black,
+                    BottomPeakPen = Pens.White,
+                    TopPeakPen = Pens.White,
+                    TopHeight = 100,
+                    BottomHeight = 100
+                });
 
-            ImgSoundImage.Stretch = Stretch.Fill;
-            ImgSoundImage.Source = GetImageStream(image);
+                ImgSoundImage.Stretch = Stretch.Fill;
+                ImgSoundImage.Source = GetImageStream(image);
+            } 
+            else
+            {
+                ImgSoundImage.Source = null;
+            }
 
         }
 
@@ -95,7 +105,7 @@ namespace KIsabelSampleLibrary.Controls
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            App.Services.Audio().PlaySample(_Sample);
+            App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
         }
     }
 }

@@ -10,7 +10,7 @@
         
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold">
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*"/>
@@ -29,22 +29,24 @@
         </TextBlock>
         
         <StackPanel Grid.Row="2" Margin="5" >
+            
             <Button Height="30" Click="Button_Click">Settings</Button>
             <Button Height="30" Click="Button_Click_1">Refresh Libraries</Button>
             <Button Height="30" Click="Button_Click_2">Refresh UI</Button>
+            <Button Height="30" Click="Button_Click_4">Remove missing samples</Button>
         </StackPanel>
         
-        <TextBlock Name="TxtLog" Grid.Row="3" Background="Black" Foreground="LightGreen" Grid.ColumnSpan="3" Grid.Column="0" TextWrapping="Wrap" FontSize="12" FontFamily="Fira Code Medium" Margin="5,5,5,5" Grid.RowSpan="2">
-           
-            Logs
-        </TextBlock>
+        
 
         <GroupBox Grid.Row="1" Header="Libraries">
+          
+            
             <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" FontFamily="Segoe UI Historic" FontSize="12">
                 <TreeViewItem Header="test">
                     <TreeViewItem Header="test2"></TreeViewItem>
                 </TreeViewItem>
             </TreeView>
+            
         </GroupBox>
         
         <GroupBox FontSize="12" Grid.Column="1" Grid.Row="0" Header="Search">
@@ -58,15 +60,18 @@
                     <TextBox Name="TxtGenres" VerticalContentAlignment="Center" Width="100"></TextBox>
                     <Label>Favorites</Label>
                     <CheckBox Name="ChkFavorites"></CheckBox>
+                    <Label>Missing files</Label>
+                    <CheckBox Name="ChkMissingFiles"></CheckBox>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="34">
-                    <Button Name="BtnReset" Width="80" Margin="5">Reset</Button>
+                    <Button Margin="5" Click="Button_Click_3">Select All Folders</Button>
+                    <Button Name="BtnReset" Width="80" Margin="5" Click="BtnReset_Click">Reset</Button>
                     <Button Name="BtnSearch" Width="80" Margin="5" Click="BtnSearch_Click">Search</Button>
                 </StackPanel>
             </StackPanel>
            
         </GroupBox>
-        <GroupBox Header="Samples" Grid.Column="1" Grid.Row="1">
+        <GroupBox Name="SampleGroupBox" Header="Samples" Grid.Column="1" Grid.Row="1">
             <ListView Name="SamplesList" 
                       MouseDoubleClick="SamplesList_MouseDoubleClick"
                       SelectionChanged="SamplesList_SelectionChanged"
@@ -78,6 +83,8 @@
                             <GridViewColumn Header="Genres" Width="100" DisplayMemberBinding="{Binding Path=genres}"/>
                             <GridViewColumn Header="Tags" Width="100" DisplayMemberBinding="{Binding Path=tags}"/>
                             <GridViewColumn Header="Favorite" Width="50" DisplayMemberBinding="{Binding Path=favorite}"/>
+                            <GridViewColumn Header="Exists" Width="50" DisplayMemberBinding="{Binding Path=isFilePresent}"/>
+                            
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -86,17 +93,21 @@
 
         <Controls:Player Margin="5" x:Name="SamplePlayer" Grid.Column="1" Grid.Row="2" Sample="{x:Null}"/>
 
-        <StackPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2">
-            <ToolBar >
-                <Label>Drum Pads</Label>
-                <Label>N/A</Label>
-                <Separator></Separator>
+        <StackPanel Margin="10"  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2">
+            <ToolBar  >
                 <Button>Save</Button>
                 <Button>Load</Button>
+                <Separator></Separator>
+                
+                <Label Name="PadsKitName">N/A</Label>
+               
+                
             </ToolBar>
             <Controls:DrumPads Height="400" />
         </StackPanel>
-        
+        <TextBlock Name="TxtLog" Grid.Row="3" Background="Black" Foreground="LightGreen" Grid.ColumnSpan="3" Grid.Column="0" TextWrapping="Wrap" FontSize="12" FontFamily="Fira Code Medium" Margin="5,5,5,5" Grid.RowSpan="2">
+            Logs
+        </TextBlock>
        
     </Grid>
 </Window>

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KIsabelSampleLibrary.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201126233838_samplesModifs2")]
-    partial class samplesModifs2
+    [Migration("20201128084941_isfilepreset")]
+    partial class isfilepreset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,9 @@ namespace KIsabelSampleLibrary.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SamplesFolderId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("addedDate")
@@ -39,14 +42,14 @@ namespace KIsabelSampleLibrary.Migrations
                     b.Property<string>("genres")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("isFilePresent")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("key")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("lengthMs")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("libBaseFolder")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("notes")
                         .HasColumnType("TEXT");
@@ -63,6 +66,26 @@ namespace KIsabelSampleLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Samples");
+                });
+
+            modelBuilder.Entity("KIsabelSampleLibrary.Entity.SamplesFolder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BasePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SamplesFolders");
                 });
 #pragma warning restore 612, 618
         }

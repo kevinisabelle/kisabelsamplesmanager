@@ -16,18 +16,11 @@ namespace UnitTests
         public void SaveAndLoadSettings()
         {
             ServicesManager services = new ServicesManager();
-
             services.Settings().LoadSettings();
-
-            services.Settings().Settings.SamplePaths.Add("K:\\Google Drive\\Studio Data\\Samples2020");
             services.Settings().Settings.AudioInterface = "Interface #1";
-
             services.Settings().SaveSettings();
-
             services.Settings().LoadSettings();
             Assert.AreEqual(services.Settings().Settings.AudioInterface, "Interface #1");
-
-
         }
 
         [TestMethod]
@@ -70,36 +63,43 @@ namespace UnitTests
         [TestMethod]
         public void TestGetSamplesFromPath()
         {
+            SamplesFolder folder = new SamplesFolder()
+            {
+                Id = 0,
+                BasePath = testdatapath
+            };
+
             ServicesManager services = new ServicesManager();
-            services.Settings().Settings.SamplePaths.Add(testdatapath);
-            services.Settings().SaveSettings();
 
-            List<Sample> samples = AudioFileHelper.AnalyzePath(testdatapath, testdatapath);
+            List<Sample> samples = AudioFileHelper.AnalyzePath(testdatapath, folder, null);
 
-            services.Audio().PlaySample(samples.First());
+            services.Audio().PlaySample(samples.First(), new List<SamplesFolder>() { folder });
         }
 
         [TestMethod]
         public void TestEnumerateDevies()
         {
             ServicesManager services = new ServicesManager();
-            services.Settings().Settings.SamplePaths.Add(testdatapath);
+          
             services.Settings().Settings.AudioDriver = AudioService.AudioDriverType.DirectSoundOut;
             services.Settings().SaveSettings();
-
-           // List<DirectSoundOut> devices = services.Audio().GetInterfacesForSelectedDriver();
-
         }
 
         [TestMethod]
         public void TestRefreshDatabase()
         {
+            SamplesFolder folder = new SamplesFolder()
+            {
+                Id = 0,
+                BasePath = testdatapath
+            };
+
             ServicesManager services = new ServicesManager();
-            services.Settings().Settings.SamplePaths.Add(testdatapath);
+        
             services.Settings().Settings.AudioDriver = AudioService.AudioDriverType.DirectSoundOut;
             services.Settings().SaveSettings();
 
-            services.Samples().RefreshDatabase(services.Settings().Settings.SamplePaths.First());
+            services.Samples().RefreshDatabase();
 
             string tag1 = "tag1";
             string tag2 = "tag2";

@@ -22,6 +22,9 @@ namespace KIsabelSampleLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("SamplesFolderId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("addedDate")
                         .HasColumnType("TEXT");
 
@@ -37,14 +40,14 @@ namespace KIsabelSampleLibrary.Migrations
                     b.Property<string>("genres")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("isFilePresent")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("key")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("lengthMs")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("libBaseFolder")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("notes")
                         .HasColumnType("TEXT");
@@ -61,6 +64,26 @@ namespace KIsabelSampleLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Samples");
+                });
+
+            modelBuilder.Entity("KIsabelSampleLibrary.Entity.SamplesFolder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BasePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SamplesFolders");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,6 @@ namespace KIsabelSampleLibrary.Entity
 {
     public class Settings
     {
-        public List<string> SamplePaths { get; set; }
         
         public string AudioInterface { get; set; }
 
@@ -19,17 +18,11 @@ namespace KIsabelSampleLibrary.Entity
         
         public Settings()
         {
-            SamplePaths = new List<string>();
+          
             AudioDriver = AudioDriverType.DirectSoundOut;
             DirectOutDeviceId = Guid.Empty;
         }
 
-        public void SanitizePaths()
-        {
-            for (int i =0; i<SamplePaths.Count; i++)
-            {
-                SamplePaths[i] = PathHelper.SanitizeBaseFolderPath(SamplePaths[i]);
-            }
-        }
+       
     }
 }

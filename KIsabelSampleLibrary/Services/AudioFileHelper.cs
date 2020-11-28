@@ -10,7 +10,7 @@ namespace KIsabelSampleLibrary.Services
 {
     public class AudioFileHelper
     {
-        public static Sample AnalyzeFile(string path, string samplesBasePath)
+        public static Sample AnalyzeFile(string path, SamplesFolder samplesBasePath)
         {
             try
             {
@@ -28,8 +28,8 @@ namespace KIsabelSampleLibrary.Services
                         lengthMs = (int)reader.TotalTime.TotalMilliseconds,
                         filename = Path.GetFileName(path),
                         addedDate = DateTime.Now,
-                        path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath), "")),
-                        libBaseFolder = samplesBasePath
+                        path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath.BasePath), "")),
+                        SamplesFolderId = samplesBasePath.Id
 
                     };
                 }
@@ -41,7 +41,7 @@ namespace KIsabelSampleLibrary.Services
             return null;
         }
 
-        public static List<Sample> AnalyzePath(string path, string libBasePath, UpdateFeedback feedback)
+        public static List<Sample> AnalyzePath(string path, SamplesFolder libBasePath, UpdateFeedback feedback)
         {
             List<Sample> result = new List<Sample>();
 
@@ -56,7 +56,7 @@ namespace KIsabelSampleLibrary.Services
                     result.Add(sample);
                 }
 
-                feedback.Invoke(sample, -1, -1, RefreshDataStatus.PROCESSING);
+                feedback.Invoke(sample, -1, -1, libBasePath, 0, 0, RefreshDataStatus.PROCESSING);
             }
 
             foreach (string directories in Directory.GetDirectories(path))

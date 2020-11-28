@@ -41,11 +41,16 @@ namespace KIsabelSampleLibrary.Services
             return new DirectSoundOut(Settings.Settings.DirectOutDeviceId);
         }
 
-        public void PlaySample(Sample sample)
+        public void PlaySample(Sample sample, List<SamplesFolder> folders)
         {
+            if (!sample.isFilePresent)
+            {
+                return;
+            }
+
             DirectSoundOut device = GetOutDevice();
 
-            WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath());
+            WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
             WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
             volumeStream.Volume = 1;
             device.Init(volumeStream);

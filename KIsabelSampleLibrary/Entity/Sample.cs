@@ -19,7 +19,8 @@ namespace KIsabelSampleLibrary.Entity
         public string notes { get; set; }
         public DateTime addedDate { get; set; }
         public bool favorite { get; set; }
-        public string libBaseFolder { get; set; }
+        public bool isFilePresent { get; set; }
+        public int SamplesFolderId { get; set; }
 
         public Sample()
         {
@@ -27,8 +28,9 @@ namespace KIsabelSampleLibrary.Entity
             key = "";
             notes = "";
             addedDate = DateTime.Now;
-            libBaseFolder = "";
+            SamplesFolderId = 0;
             genres = "";
+            isFilePresent = false;
         }
 
         public List<string> GetTags()
@@ -56,9 +58,14 @@ namespace KIsabelSampleLibrary.Entity
             return filename;
         }
 
-        public string GetFullPath()
+        public string GetFullPath(List<SamplesFolder> folders)
         {
-            return libBaseFolder + path + filename;
+            return folders.First(f => f.Id == SamplesFolderId).BasePath + GetPartialPath();
+        }
+
+        public string GetPartialPath()
+        {
+            return path + filename;
         }
 
         public bool IsSameSample(Sample other)
@@ -68,7 +75,7 @@ namespace KIsabelSampleLibrary.Entity
                 return false;
             }
 
-            return GetFullPath() == other.GetFullPath();
+            return GetPartialPath() == other.GetPartialPath();
         }
 
     }

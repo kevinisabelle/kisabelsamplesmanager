@@ -66,7 +66,7 @@ namespace KIsabelSampleLibrary.Controls
 
             if (sample != null)
             {
-                App.Services.Audio().PlaySample(sample);
+                App.Services.Audio().PlaySample(sample, App.Services.Samples().GetFolders());
             }
         }
 

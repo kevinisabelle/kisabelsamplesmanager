@@ -11,7 +11,7 @@ namespace KIsabelSampleLibrary.Services
     
     public class SamplesService
     {
-        public delegate void UpdateFeedback(Sample sample, long currentCount, long totalCount, RefreshDataStatus threadstatus);
+        public delegate void UpdateFeedback(Sample sample, long currentCount, long totalCount, SamplesFolder folder, int folderCurrentCount, int folderTotalCount, RefreshDataStatus threadstatus);
 
         private DatabaseContext DbContext { get; set; }
         private SettingsService Settings { get; set; }
@@ -42,9 +42,15 @@ namespace KIsabelSampleLibrary.Services
                 .ToList();
         }
 
+        public List<SamplesFolder> GetFolders()
+        {
+            return DbContext.SamplesFolders.ToList();
+        }
+
         public List<Sample> FindSamples(SampleSearchModel searchParameters)
         {
-            IQueryable<Sample> result = DbContext.Samples.AsQueryable() ;
+            IQueryable<Sample> result = DbContext.Samples.ToList().AsQueryable();
+            List<SamplesFolder> folders = GetFolders();
 
             if (searchParameters.query != null)
             {
@@ -53,7 +59,7 @@ namespace KIsabelSampleLibrary.Services
 
             if (searchParameters.path != null)
             {
-                result = result.Where(s => (s.libBaseFolder + s.path + s.filename).StartsWith(searchParameters.path));
+                result = result.Where(s => s.GetFullPath(folders).StartsWith(searchParameters.path));
             }
 
             if (searchParameters.favorites.HasValue && searchParameters.favorites.Value)
@@ -61,27 +67,47 @@ namespace KIsabelSampleLibrary.Services
                 result = result.Where(s => s.favorite); 
             }
 
+            if (searchParameters.missingFiles.HasValue && searchParameters.missingFiles.Value)
+            {
+                result = result.Where(s => !s.isFilePresent);
+            }
+
+
             return result.ToList();
         }
 
-        public Sample GetSampleFromFullPath(string fullpath)
+        public void RemoveMissingFiles()
         {
-            return DbContext.Samples.FirstOrDefault(s => (s.libBaseFolder + s.path + s.filename) == fullpath);
+            List<Sample> samples = FindSamples(new SampleSearchModel());
+
+            foreach (var sample in samples)
+            {
+                if (!sample.isFilePresent)
+                {
+                    DbContext.Samples.Remove(sample);
+                    DbContext.SaveChanges();
+                }
+            }
+        }
+
+        public Sample GetSampleFromFullPath(string fullpath, List<SamplesFolder> folders)
+        {
+            return DbContext.Samples.FirstOrDefault(s => (s.GetFullPath(folders) == fullpath));
         }
 
         private Thread AnalysisThread = null;
         public struct RefreshParams
         {
-            public string path;
+            public List<SamplesFolder> folders;
             public UpdateFeedback updateFeedback;
         }
 
-        public void RefreshDatabase(string path, UpdateFeedback updateFeedback = null)
+        public void RefreshDatabase(UpdateFeedback updateFeedback = null)
         {
             if (AnalysisThread != null && AnalysisThread.IsAlive)
             {
                 AnalysisThread.Interrupt();
-                updateFeedback.Invoke(null, 0, 0, RefreshDataStatus.IDLE);
+                updateFeedback.Invoke(null, 0, 0, null, 0, 0, RefreshDataStatus.IDLE);
                 
                 return;
             }
@@ -93,7 +119,7 @@ namespace KIsabelSampleLibrary.Services
 
             AnalysisThread.Start(new RefreshParams()
             {
-                path = path,
+                folders = GetFolders(),
                 updateFeedback = updateFeedback
             });
         }
@@ -102,46 +128,73 @@ namespace KIsabelSampleLibrary.Services
         {
             IDLE,
             PROCESSING,
+            CHECKING_FILES,
             ERROR
         }
 
-        public void RefreshDatabaseThread(object updateFeedbackp)
+        public void RefreshDatabaseThread(object paramsParam)
         {
-            RefreshParams updateFeedback = (RefreshParams)updateFeedbackp;
+            RefreshParams paramsObject = (RefreshParams)paramsParam;
+            int totalFolders = paramsObject.folders.Count();
+            int currentFolder = 0;
 
-            List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(updateFeedback.path, updateFeedback.path, updateFeedback.updateFeedback);
-            long total = samplesFiles.Count();
-            long processed = 0;
-            List<Sample> existingSamples = FindSamples(new SampleSearchModel()
+            foreach (var folder in paramsObject.folders)
             {
-                path = updateFeedback.path
-            });
+                currentFolder++;
 
-            foreach (var sample in samplesFiles)
-            {
-                try
+                List<Sample> samplesFiles = AudioFileHelper
+                    .AnalyzePath(folder.BasePath, folder, paramsObject.updateFeedback);
+
+                long total = samplesFiles.Count();
+                List<SamplesFolder> folders = GetFolders();
+                long processed = 0;
+                List<Sample> existingSamples = FindSamples(new SampleSearchModel()
                 {
-                    Thread.Sleep(1);
-                }
-                catch (ThreadInterruptedException e)
+                    path = folder.BasePath
+                });
+
+                foreach (var sample in samplesFiles)
                 {
-                    break;
+                    AddSampleIfNotExist(sample, existingSamples, folders);
+                    processed++;
+                    if (paramsObject.updateFeedback != null)
+                    {
+                        paramsObject.updateFeedback.Invoke(sample, processed, total, folder, currentFolder, totalFolders, RefreshDataStatus.PROCESSING);
+                    }
                 }
 
-                AddSampleIfNotExist(sample, existingSamples);
-                processed++;
-                if (updateFeedback.updateFeedback != null)
+                
+
+                samplesFiles = FindSamples(new SampleSearchModel());
+
+                processed = 0;
+                total = samplesFiles.Count();
+
+                foreach (var sample in samplesFiles)
                 {
-                    updateFeedback.updateFeedback.Invoke(sample, processed, total, RefreshDataStatus.PROCESSING);
+                    processed++;
+                    string sampleFilePath = sample.GetFullPath(folders);
+                    bool fileExists = File.Exists(sampleFilePath);
+
+                    if (sample.isFilePresent != fileExists)
+                    {
+                        sample.isFilePresent = fileExists;
+                        SaveSample(sample);
+                    }
+
+                    if (paramsObject.updateFeedback != null)
+                    {
+                        paramsObject.updateFeedback.Invoke(sample, processed, total, folder, currentFolder, totalFolders, RefreshDataStatus.CHECKING_FILES);
+                    }
                 }
             }
 
-            updateFeedback.updateFeedback.Invoke(null, processed, total, RefreshDataStatus.IDLE);
+            paramsObject.updateFeedback.Invoke(null, 0, 0, null, totalFolders, currentFolder, RefreshDataStatus.IDLE);
         }
 
-        public void AddSampleIfNotExist(Sample sample, List<Sample> existingSamples)
+        public void AddSampleIfNotExist(Sample sample, List<Sample> existingSamples, List<SamplesFolder> folders)
         {
-            Sample sampledb = existingSamples.FirstOrDefault(s => s.GetFullPath() == sample.GetFullPath());
+            Sample sampledb = existingSamples.FirstOrDefault(s => s.GetFullPath(folders) == sample.GetFullPath(folders));
 
             if (sampledb == null)
             {
@@ -157,13 +210,20 @@ namespace KIsabelSampleLibrary.Services
             DbContext.SaveChanges();
         }
 
-        public FolderTree GetFolderTree(string basePath)
+        public FolderTree GetFolderTree(List<SamplesFolder> folders)
         {
             FolderTree tree = new FolderTree();
             List<Sample> samples = FindSamples(new SampleSearchModel());
-            FolderTreeElement root = new FolderTreeElement() { Path = basePath };
-            root.Elements = GetChildren(root, samples.Select(s => s.libBaseFolder + s.path).Distinct().ToList());
-            tree.Elements = new List<FolderTreeElement>() { root };
+            tree.Elements = new List<FolderTreeElement>();
+
+            foreach (var folder in folders)
+            {
+                FolderTreeElement root = new FolderTreeElement() { Path = folder.BasePath };
+                root.Folder = folder;
+                root.Elements = GetChildren(root, samples.Select(s => folders.First(f => f.Id == s.SamplesFolderId).BasePath + s.path).Distinct().ToList());
+                tree.Elements.Add(root);
+            }
+            
             return tree;
         }
 
@@ -171,17 +231,20 @@ namespace KIsabelSampleLibrary.Services
         {
             List<FolderTreeElement> children = new List<FolderTreeElement>();
 
-            string[] childrenPaths = Directory.GetDirectories(element.Path);
-
-            foreach (string path in childrenPaths)
+            if (element.Path != null)
             {
-                if (!paths.Any(p => p.StartsWith(path)))
+                string[] childrenPaths = Directory.GetDirectories(element.Path);
+
+                foreach (string path in childrenPaths)
                 {
-                    continue;
+                    if (!paths.Any(p => p.StartsWith(path)))
+                    {
+                        continue;
+                    }
+                    FolderTreeElement elementChild = new FolderTreeElement() { Path = path };
+                    elementChild.Elements = GetChildren(elementChild, paths);
+                    children.Add(elementChild);
                 }
-                FolderTreeElement elementChild = new FolderTreeElement() { Path = path};
-                elementChild.Elements = GetChildren(elementChild, paths);
-                children.Add(elementChild);
             }
 
             return children;

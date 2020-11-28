@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KIsabelSampleLibrary.Entity;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,6 @@ namespace KIsabelSampleLibrary.Services
     {
         public string Path { get; set; }
         public List<FolderTreeElement> Elements { get; set; }
+        public SamplesFolder Folder { get; set; }
     }
 }

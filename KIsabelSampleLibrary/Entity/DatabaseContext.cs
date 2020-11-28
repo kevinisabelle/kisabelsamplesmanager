@@ -7,8 +7,8 @@ namespace KIsabelSampleLibrary.Entity
 {
     public class DatabaseContext : DbContext
     {
-
         public DbSet<Sample> Samples { get; set; }
+        public DbSet<SamplesFolder> SamplesFolders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
