@@ -8,7 +8,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -27,7 +27,8 @@
             tags
         </TextBlock>
         <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="5"></Image>
+        
         <Label Name="LblDuration" Grid.Row="0" Grid.Column="2">ms</Label>
-        <Label Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="5">File gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</Label>
+        <TextBox Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="5" TextWrapping="Wrap" FontFamily="Arial">File aoifdj asodifj aosidfj aosdifj aosdijf aosdijf aosidjf aosdijf aosidjf gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</TextBox>
          </Grid>
 </UserControl>

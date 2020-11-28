@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static KIsabelSampleLibrary.Services.SamplesService;
 
 namespace KIsabelSampleLibrary
 {
@@ -39,8 +40,6 @@ namespace KIsabelSampleLibrary
 
         public void RefreshUI()
         {
-            
-
             LibraryTreeView.Items.Clear();
 
             FolderTree tree = App.Services.Samples().GetFolderTree(App.Services.Settings().Settings.SamplePaths.FirstOrDefault());
@@ -52,31 +51,30 @@ namespace KIsabelSampleLibrary
             AddTreeElement(rootItem, tree.Elements.First());
 
             RefreshSamplesList();
-           
         }
 
         public void RefreshLibraryDb()
         {
             App.Services.Samples().RefreshDatabase(App.Services.Settings().Settings.SamplePaths.First(), FeedBack);
         }
-
-        public delegate void UpdateTextCallback(Sample sample);
-
-        public void FeedBack(Sample sample)
+        
+        public void FeedBack(Sample sample, long currentcount, long totalCount, RefreshDataStatus status)
         {
-           
-            if (sample != null)
+            try
             {
                 TxtLog.Dispatcher.Invoke(
-                    new UpdateTextCallback(SetSample),
-                    new object[] { sample }
+                    new UpdateFeedback(SetSample),
+                    new object[] { sample, currentcount, totalCount, status }
                 );
+            } catch(Exception e)
+            {
+
             }
         }
 
-        public void SetSample(Sample sample)
+        public void SetSample(Sample sample, long currentcount, long totalCount, RefreshDataStatus status)
         {
-            TxtLog.Text = sample.ToString();
+            TxtLog.Text = status + "\n" + currentcount + " / " + totalCount + "\n" + sample?.filename;
         }
 
         private void AddTreeElement(TreeViewItem item, FolderTreeElement element)
@@ -84,7 +82,8 @@ namespace KIsabelSampleLibrary
             foreach (var child in element.Elements)
             {
                 TreeViewItem childItem = new TreeViewItem();
-                childItem.Header = child.Path.Replace(element.Path, "");
+                childItem.Header = PathHelper.SanitizeSamplePathFolder(child.Path.Replace(element.Path, ""), false);
+
                 childItem.ToolTip = child.Path;
                 AddTreeElement(childItem, child);
                 item.Items.Add(childItem);
@@ -106,8 +105,8 @@ namespace KIsabelSampleLibrary
             string pathQuery = null;
             if (LibraryTreeView.SelectedItem != null)
             {
-                pathQuery = ((TreeViewItem)(LibraryTreeView.SelectedItem))?.ToolTip?.ToString().Replace(App.Services.Settings().Settings.SamplePaths.First(), "\\");
-            }
+                pathQuery = ((TreeViewItem)(LibraryTreeView.SelectedItem))?.ToolTip?.ToString();
+            } 
 
             List<Sample> samples = App.Services.Samples().FindSamples(new SampleSearchModel()
             {
@@ -118,16 +117,10 @@ namespace KIsabelSampleLibrary
             SamplesList.DisplayMemberPath = "filename";
             SamplesList.Items.Clear();
 
-
             foreach (var sample in samples)
             {
                 SamplesList.Items.Add(sample);
             }
-        }
-
-        private void LibraryTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
         }
 
         private void LibraryTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

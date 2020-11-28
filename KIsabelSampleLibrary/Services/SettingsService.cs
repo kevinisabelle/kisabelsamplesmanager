@@ -30,6 +30,7 @@ namespace KIsabelSampleLibrary.Services
 
         public void SaveSettings()
         {
+            Settings.SanitizePaths();
             File.WriteAllText(settingsfile, JsonConvert.SerializeObject(Settings));
         }
 

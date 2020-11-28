@@ -25,7 +25,7 @@ namespace KIsabelSampleLibrary.Services
                     lengthMs = (int)reader.TotalTime.TotalMilliseconds,
                     filename = Path.GetFileName(path),
                     addedDate = DateTime.Now,
-                    path = Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath), ""),
+                    path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath), "")),
                     libBaseFolder = samplesBasePath
                     
                 };

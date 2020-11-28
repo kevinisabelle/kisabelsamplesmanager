@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using KIsabelSampleLibrary.Services;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,14 @@ namespace KIsabelSampleLibrary.Entity
             SamplePaths = new List<string>();
             AudioDriver = AudioDriverType.DirectSoundOut;
             DirectOutDeviceId = Guid.Empty;
+        }
+
+        public void SanitizePaths()
+        {
+            for (int i =0; i<SamplePaths.Count; i++)
+            {
+                SamplePaths[i] = PathHelper.SanitizeBaseFolderPath(SamplePaths[i]);
+            }
         }
     }
 }

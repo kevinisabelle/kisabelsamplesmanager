@@ -11,7 +11,7 @@ namespace KIsabelSampleLibrary.Services
     
     public class SamplesService
     {
-        public delegate void UpdateFeedback(Sample sample);
+        public delegate void UpdateFeedback(Sample sample, long currentCount, long totalCount, RefreshDataStatus threadstatus);
 
         private DatabaseContext DbContext { get; set; }
         private SettingsService Settings { get; set; }
@@ -53,7 +53,7 @@ namespace KIsabelSampleLibrary.Services
 
             if (searchParameters.path != null)
             {
-                result = result.Where(s => s.path.StartsWith(searchParameters.path));
+                result = result.Where(s => (s.libBaseFolder + s.path + s.filename).StartsWith(searchParameters.path));
             }
 
             return result.ToList();
@@ -73,7 +73,18 @@ namespace KIsabelSampleLibrary.Services
 
         public void RefreshDatabase(string path, UpdateFeedback updateFeedback = null)
         {
-            AnalysisThread = new Thread(RefreshDatabaseThread);
+            if (AnalysisThread != null && AnalysisThread.IsAlive)
+            {
+                AnalysisThread.Interrupt();
+                updateFeedback.Invoke(null, 0, 0, RefreshDataStatus.IDLE);
+                
+                return;
+            }
+
+            if (AnalysisThread == null || !AnalysisThread.IsAlive)
+            {
+                AnalysisThread = new Thread(RefreshDatabaseThread);
+            }
 
             AnalysisThread.Start(new RefreshParams()
             {
@@ -82,29 +93,55 @@ namespace KIsabelSampleLibrary.Services
             });
         }
 
+        public enum RefreshDataStatus
+        {
+            IDLE,
+            PROCESSING,
+            ERROR
+        }
+
         public void RefreshDatabaseThread(object updateFeedbackp)
         {
             RefreshParams updateFeedback = (RefreshParams)updateFeedbackp;
 
             List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(updateFeedback.path, updateFeedback.path);
+            long total = samplesFiles.Count();
+            long processed = 0;
+            List<Sample> existingSamples = FindSamples(new SampleSearchModel()
+            {
+                path = updateFeedback.path
+            });
+
             foreach (var sample in samplesFiles)
             {
-                AddSampleIfNotExist(sample);
+                try
+                {
+                    Thread.Sleep(1);
+                }
+                catch (ThreadInterruptedException e)
+                {
+                    break;
+                }
 
+                AddSampleIfNotExist(sample, existingSamples);
+                processed++;
                 if (updateFeedback.updateFeedback != null)
                 {
-                    updateFeedback.updateFeedback.Invoke(sample);
+                    updateFeedback.updateFeedback.Invoke(sample, processed, total, RefreshDataStatus.PROCESSING);
                 }
             }
+
+            updateFeedback.updateFeedback.Invoke(null, processed, total, RefreshDataStatus.IDLE);
         }
 
-        public void AddSampleIfNotExist(Sample sample)
+        public void AddSampleIfNotExist(Sample sample, List<Sample> existingSamples)
         {
-            Sample sampledb = GetSampleFromFullPath(sample.GetFullPath());
+            Sample sampledb = existingSamples.FirstOrDefault(s => s.GetFullPath() == sample.GetFullPath());
 
-            if (!sample.IsSameSample(sampledb))
+            if (sampledb == null)
             {
                 DbContext.Add(sample);
+                existingSamples.Add(sample);
                 DbContext.SaveChanges();
             }
         }
@@ -118,13 +155,14 @@ namespace KIsabelSampleLibrary.Services
         public FolderTree GetFolderTree(string basePath)
         {
             FolderTree tree = new FolderTree();
+            List<Sample> samples = FindSamples(new SampleSearchModel());
             FolderTreeElement root = new FolderTreeElement() { Path = basePath };
-            root.Elements = GetChildren(root);
+            root.Elements = GetChildren(root, samples.Select(s => s.libBaseFolder + s.path).Distinct().ToList());
             tree.Elements = new List<FolderTreeElement>() { root };
             return tree;
         }
 
-        private List<FolderTreeElement> GetChildren(FolderTreeElement element)
+        private List<FolderTreeElement> GetChildren(FolderTreeElement element, List<string> paths)
         {
             List<FolderTreeElement> children = new List<FolderTreeElement>();
 
@@ -132,8 +170,12 @@ namespace KIsabelSampleLibrary.Services
 
             foreach (string path in childrenPaths)
             {
+                if (!paths.Any(p => p.StartsWith(path)))
+                {
+                    continue;
+                }
                 FolderTreeElement elementChild = new FolderTreeElement() { Path = path};
-                elementChild.Elements = GetChildren(elementChild);
+                elementChild.Elements = GetChildren(elementChild, paths);
                 children.Add(elementChild);
             }
 

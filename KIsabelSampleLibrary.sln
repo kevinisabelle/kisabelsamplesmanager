@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KIsabelSampleLibrary", "KIs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveFormRendererLib", "WaveFormRendererLib\WaveFormRendererLib.csproj", "{3EFEF2D1-5D08-46FD-AF6D-098DBE7FB3B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8BC7A5D-EF40-471A-96B5-A55D2FADD660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EFEF2D1-5D08-46FD-AF6D-098DBE7FB3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EFEF2D1-5D08-46FD-AF6D-098DBE7FB3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EFEF2D1-5D08-46FD-AF6D-098DBE7FB3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EFEF2D1-5D08-46FD-AF6D-098DBE7FB3B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
