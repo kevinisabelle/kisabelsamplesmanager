@@ -54,7 +54,7 @@ namespace KIsabelSampleLibrary.Services
 
             if (searchParameters.query != null)
             {
-                result = result.Where(s => s.GetFullPath(folders).ToLower().Contains(searchParameters.query.ToLower()));
+                result = result.Where(s => s.GetFullAbsolutePath(folders).ToLower().Contains(searchParameters.query.ToLower()));
             }
 
             if (searchParameters.path != null)

@@ -50,7 +50,7 @@ namespace KIsabelSampleLibrary.Controls
                 return;
             }
 
-            string sampleFullPath = _Sample.GetFullPath(App.Services.Samples().GetFolders());
+            string sampleFullPath = _Sample.GetFullAbsolutePath(App.Services.Samples().GetFolders());
 
             LblFilename.Text = sampleFullPath;
             TxtTags.Text = _Sample.tags;

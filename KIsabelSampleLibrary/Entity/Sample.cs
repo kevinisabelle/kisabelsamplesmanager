@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -61,6 +62,18 @@ namespace KIsabelSampleLibrary.Entity
         public string GetFullPath(List<SamplesFolder> folders)
         {
             return folders.First(f => f.Id == SamplesFolderId).BasePath + GetPartialPath();
+        }
+
+        public string GetFullAbsolutePath(List<SamplesFolder> folders)
+        {
+
+            if (GetFullPath(folders).StartsWith(".")) {
+                return Path.GetFullPath(GetFullPath(folders), AppDomain.CurrentDomain.BaseDirectory);
+            } 
+            else
+            {
+                return GetFullPath(folders);
+            }
         }
 
         public string GetPartialPath()

@@ -29,7 +29,8 @@ namespace KIsabelSampleLibrary.Services
                         filename = Path.GetFileName(path),
                         addedDate = DateTime.Now,
                         path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath.BasePath), "")),
-                        SamplesFolderId = samplesBasePath.Id
+                        SamplesFolderId = samplesBasePath.Id,
+                        isFilePresent = true
 
                     };
                 }

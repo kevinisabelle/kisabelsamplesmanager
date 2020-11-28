@@ -187,7 +187,7 @@ namespace KIsabelSampleLibrary
 
         private static string[] GetDataFromListBox(ListViewItem source)
         {
-            return new string[] { (source.Content as Sample).GetFullPath(App.Services.Samples().GetFolders()) };
+            return new string[] { (source.Content as Sample).GetFullAbsolutePath(App.Services.Samples().GetFolders()) };
 
         }
 
