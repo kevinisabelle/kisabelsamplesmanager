@@ -177,17 +177,17 @@ namespace KIsabelSampleLibrary
         {
             ListViewItem parent = (ListViewItem)sender;
             ListViewItem  dragSource = parent;
-            object data = GetDataFromListBox(dragSource);
-
+            object data2 = GetDataFromListBox(dragSource);
+            DataObject data = new DataObject(DataFormats.FileDrop, data2);
             if (data != null)
             {
                 DragDrop.DoDragDrop(parent, data, DragDropEffects.Copy);
             }
         }
 
-        private static object GetDataFromListBox(ListViewItem source)
+        private static string[] GetDataFromListBox(ListViewItem source)
         {
-            return source.Content as Sample;
+            return new string[] { (source.Content as Sample).GetFullPath(App.Services.Samples().GetFolders()) };
 
         }
 

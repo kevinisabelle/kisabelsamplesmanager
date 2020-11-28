@@ -75,10 +75,28 @@ namespace KIsabelSampleLibrary.Controls
             
             Sample sample = e.Data.GetData(typeof(Sample)) as Sample;
 
-            int[] yx = ((Button)sender).Name.Substring(1).Split("_").Select(t => int.Parse(t)).ToArray();
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            _Samples[yx[0]][yx[1]] = sample;
-            _Buttons[yx[0]][yx[1]].Content = sample.filename;
+            if (files != null)
+            {
+                sample = App.Services.Samples().FindSamples(new Services.SampleSearchModel()
+                {
+                    query = files[0]
+                }).FirstOrDefault();
+            }
+
+            if (sample != null)
+            {
+                int[] yx = ((Button)sender).Name.Substring(1).Split("_").Select(t => int.Parse(t)).ToArray();
+
+                _Samples[yx[0]][yx[1]] = sample;
+                _Buttons[yx[0]][yx[1]].Content = sample.filename;
+
+                return;
+            }
+
+            
+
         }
 
         private Sample[][] _Samples;
