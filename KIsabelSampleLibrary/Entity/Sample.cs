@@ -51,11 +51,9 @@ namespace KIsabelSampleLibrary.Entity
             this.genres = string.Join('|', genres);
         }
 
-
-
         public override string ToString()
         {
-            return path + filename + " (" + lengthMs + " ms)";
+            return filename;
         }
 
         public string GetFullPath()

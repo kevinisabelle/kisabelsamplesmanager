@@ -48,12 +48,17 @@ namespace KIsabelSampleLibrary.Services
 
             if (searchParameters.query != null)
             {
-                result = result.Where(s => s.filename.Contains(searchParameters.query));
+                result = result.Where(s => s.filename.ToLower().Contains(searchParameters.query.ToLower()));
             }
 
             if (searchParameters.path != null)
             {
                 result = result.Where(s => (s.libBaseFolder + s.path + s.filename).StartsWith(searchParameters.path));
+            }
+
+            if (searchParameters.favorites.HasValue && searchParameters.favorites.Value)
+            {
+                result = result.Where(s => s.favorite); 
             }
 
             return result.ToList();
@@ -104,7 +109,7 @@ namespace KIsabelSampleLibrary.Services
         {
             RefreshParams updateFeedback = (RefreshParams)updateFeedbackp;
 
-            List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(updateFeedback.path, updateFeedback.path);
+            List<Sample> samplesFiles = AudioFileHelper.AnalyzePath(updateFeedback.path, updateFeedback.path, updateFeedback.updateFeedback);
             long total = samplesFiles.Count();
             long processed = 0;
             List<Sample> existingSamples = FindSamples(new SampleSearchModel()

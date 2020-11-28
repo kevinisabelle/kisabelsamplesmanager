@@ -26,4 +26,10 @@
     <ProjectReference Include="..\WaveFormRendererLib\WaveFormRendererLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Controls\DrumPads.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

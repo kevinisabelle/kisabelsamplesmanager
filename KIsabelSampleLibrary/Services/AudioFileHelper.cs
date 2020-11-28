@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using static KIsabelSampleLibrary.Services.SamplesService;
 
 namespace KIsabelSampleLibrary.Services
 {
@@ -11,30 +12,36 @@ namespace KIsabelSampleLibrary.Services
     {
         public static Sample AnalyzeFile(string path, string samplesBasePath)
         {
-            if (File.Exists(path))
+            try
             {
-                if (!path.EndsWith(".wav"))
+                if (File.Exists(path))
                 {
-                    return null;
-                }
-                 
-                AudioFileReader reader = new AudioFileReader(path);
+                    if (!path.EndsWith(".wav"))
+                    {
+                        return null;
+                    }
 
-                return new Sample()
-                {
-                    lengthMs = (int)reader.TotalTime.TotalMilliseconds,
-                    filename = Path.GetFileName(path),
-                    addedDate = DateTime.Now,
-                    path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath), "")),
-                    libBaseFolder = samplesBasePath
-                    
-                };
+                    AudioFileReader reader = new AudioFileReader(path);
+
+                    return new Sample()
+                    {
+                        lengthMs = (int)reader.TotalTime.TotalMilliseconds,
+                        filename = Path.GetFileName(path),
+                        addedDate = DateTime.Now,
+                        path = PathHelper.SanitizeSamplePathFolder(Path.GetDirectoryName(reader.FileName).Replace(Path.GetDirectoryName(samplesBasePath), "")),
+                        libBaseFolder = samplesBasePath
+
+                    };
+                }
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
             return null;
         }
 
-        public static List<Sample> AnalyzePath(string path, string libBasePath)
+        public static List<Sample> AnalyzePath(string path, string libBasePath, UpdateFeedback feedback)
         {
             List<Sample> result = new List<Sample>();
 
@@ -48,11 +55,13 @@ namespace KIsabelSampleLibrary.Services
                 {
                     result.Add(sample);
                 }
+
+                feedback.Invoke(sample, -1, -1, RefreshDataStatus.PROCESSING);
             }
 
             foreach (string directories in Directory.GetDirectories(path))
             {
-                result.AddRange(AnalyzePath(directories, libBasePath));
+                result.AddRange(AnalyzePath(directories, libBasePath, feedback));
             }
 
             return result;

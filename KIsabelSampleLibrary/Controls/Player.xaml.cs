@@ -45,6 +45,7 @@ namespace KIsabelSampleLibrary.Controls
                 TxtTags.Text = "";
                 TxtGenres.Text = "";
                 LblDuration.Content = "N/A";
+                ImgSoundImage.Source = null;
                 return;
             }
 
@@ -57,7 +58,12 @@ namespace KIsabelSampleLibrary.Controls
             System.Drawing.Image image = renderer.Render(_Sample.GetFullPath(), new StandardWaveFormRendererSettings()
             {
              Width= 2000,
-                PixelsPerPeak= 2
+                PixelsPerPeak= 2,
+                BackgroundColor = System.Drawing.Color.Black,
+                BottomPeakPen = Pens.White,
+                TopPeakPen = Pens.White,
+                TopHeight = 100,
+                BottomHeight = 100
             });
 
             ImgSoundImage.Stretch = Stretch.Fill;

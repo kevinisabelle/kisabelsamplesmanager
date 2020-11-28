@@ -74,7 +74,7 @@ namespace KIsabelSampleLibrary
 
         public void SetSample(Sample sample, long currentcount, long totalCount, RefreshDataStatus status)
         {
-            TxtLog.Text = status + "\n" + currentcount + " / " + totalCount + "\n" + sample?.filename;
+            TxtLog.Text = status + "\n" + currentcount + " / " + totalCount + "\n" + sample?.GetFullPath();
         }
 
         private void AddTreeElement(TreeViewItem item, FolderTreeElement element)
@@ -110,16 +110,28 @@ namespace KIsabelSampleLibrary
 
             List<Sample> samples = App.Services.Samples().FindSamples(new SampleSearchModel()
             {
-                path = pathQuery
+                path = pathQuery,
+                query = TxtQuery.Text == "" ? null : TxtQuery.Text,
+                genres = TxtGenres.Text == "" ? null : TxtGenres.Text.Split(" "),
+                tags = TxtTags.Text == "" ? null : TxtTags.Text.Split(" "),
+                favorites = ChkFavorites.IsChecked
             })
                 .OrderBy(s => s.filename).ToList();
 
-            SamplesList.DisplayMemberPath = "filename";
+            //SamplesList.DisplayMemberPath = "./Content/@filename";
             SamplesList.Items.Clear();
 
             foreach (var sample in samples)
             {
-                SamplesList.Items.Add(sample);
+                ListViewItem item = new ListViewItem()
+                {
+                    Content = sample,
+                    
+                };
+
+                item.PreviewMouseRightButtonDown += ListBox_PreviewMouseLeftButtonDown;
+
+                SamplesList.Items.Add(item);
             }
         }
 
@@ -130,7 +142,59 @@ namespace KIsabelSampleLibrary
 
         private void SamplesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SamplePlayer.Sample = (Sample)SamplesList.SelectedItem;
+            if (sender.GetType() != typeof(ListView))
+            {
+                return;
+            }
+
+            if (SamplesList.SelectedItem == null)
+            {
+                return;
+            }
+
+            SamplePlayer.Sample = (Sample)((ListViewItem)SamplesList.SelectedItem).Content;
+        }
+
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshSamplesList();
+        }
+
+        private void ListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListViewItem parent = (ListViewItem)sender;
+            ListViewItem  dragSource = parent;
+            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
+
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(parent, data, DragDropEffects.Copy);
+            }
+        }
+
+        private static object GetDataFromListBox(ListViewItem source, Point point)
+        {
+            return source.Content as Sample;
+
+        }
+
+        private void SamplesList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListView listView = sender as ListView;
+
+            if (listView.SelectedItem != null)
+            {
+                Sample sample = (listView.SelectedItem as ListViewItem).Content as Sample;
+                sample.favorite = !sample.favorite;
+                App.Services.Samples().SaveSample(sample);
+               
+            }
+
+            object selectedItem = listView.SelectedItem;
+
+            RefreshUI();
+
+            listView.SelectedItem = selectedItem;
         }
     }
 }
