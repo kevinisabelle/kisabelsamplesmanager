@@ -9,6 +9,7 @@ namespace KIsabelSampleLibrary.Entity
     {
         public DbSet<Sample> Samples { get; set; }
         public DbSet<SamplesFolder> SamplesFolders { get; set; }
+        public DbSet<DrumKit> DrumKits { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

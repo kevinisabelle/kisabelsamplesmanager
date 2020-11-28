@@ -80,11 +80,12 @@
                     <GridView >
                         <GridView.Columns>
                             <GridViewColumn Header="File" Width="400" DisplayMemberBinding="{Binding Path=filename}" />
+                            <GridViewColumn Header="Length"  Width="80" DisplayMemberBinding="{Binding Path=lengthMs}" />
                             <GridViewColumn Header="Genres" Width="100" DisplayMemberBinding="{Binding Path=genres}"/>
                             <GridViewColumn Header="Tags" Width="100" DisplayMemberBinding="{Binding Path=tags}"/>
                             <GridViewColumn Header="Favorite" Width="50" DisplayMemberBinding="{Binding Path=favorite}"/>
                             <GridViewColumn Header="Exists" Width="50" DisplayMemberBinding="{Binding Path=isFilePresent}"/>
-                            
+                            <GridViewColumn Header="Path" Width="400" DisplayMemberBinding="{Binding Path=path}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -94,15 +95,7 @@
         <Controls:Player Margin="5" x:Name="SamplePlayer" Grid.Column="1" Grid.Row="2" Sample="{x:Null}"/>
 
         <StackPanel Margin="10"  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2">
-            <ToolBar  >
-                <Button>Save</Button>
-                <Button>Load</Button>
-                <Separator></Separator>
-                
-                <Label Name="PadsKitName">N/A</Label>
-               
-                
-            </ToolBar>
+           
             <Controls:DrumPads Height="400" />
         </StackPanel>
         <TextBlock Name="TxtLog" Grid.Row="3" Background="Black" Foreground="LightGreen" Grid.ColumnSpan="3" Grid.Column="0" TextWrapping="Wrap" FontSize="12" FontFamily="Fira Code Medium" Margin="5,5,5,5" Grid.RowSpan="2">

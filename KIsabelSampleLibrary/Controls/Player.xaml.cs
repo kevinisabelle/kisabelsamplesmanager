@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WaveFormRendererLib;
@@ -17,6 +18,7 @@ namespace KIsabelSampleLibrary.Controls
         {
             InitializeComponent();
             this.DataContext = this;
+            this.PreviewMouseRightButtonDown += Player_PreviewMouseLeftButtonDown;
         }
 
         public string Title { get; set; }
@@ -79,6 +81,23 @@ namespace KIsabelSampleLibrary.Controls
                 ImgSoundImage.Source = null;
             }
 
+        }
+
+        private void Player_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Player parent = (Player)sender;
+
+            if (parent.Sample == null)
+            {
+                return;
+            }
+
+            object data2 = new string[] { parent.Sample.GetFullAbsolutePath(App.Services.Samples().GetFolders()) };
+            DataObject data = new DataObject(DataFormats.FileDrop, data2);
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(parent, data, DragDropEffects.Copy);
+            }
         }
 
         [DllImport("gdi32.dll")]

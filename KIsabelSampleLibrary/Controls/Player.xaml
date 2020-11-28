@@ -20,12 +20,12 @@
         </Grid.ColumnDefinitions>
         <Button Name="BtnPlay" Click="Button_Click_1" Grid.Column="0">Play</Button>
         <Button Name="BtnStop" Grid.Column="1">Stop</Button>
-        <TextBlock Name="TxtGenres" Grid.Column="3">
+        <TextBox Name="TxtGenres" Grid.Column="3">
             genre
-        </TextBlock>
-        <TextBlock Name="TxtTags" Grid.Column="4">
+        </TextBox>
+        <TextBox Name="TxtTags" Grid.Column="4">
             tags
-        </TextBlock>
+        </TextBox>
         <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="5"></Image>
         
         <Label Name="LblDuration" Grid.Row="0" Grid.Column="2">ms</Label>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WaveFormRendererLib;
@@ -36,12 +37,11 @@ namespace KIsabelSampleLibrary.Controls
                     _Buttons[y][x].AllowDrop = true;
                     _Buttons[y][x].Drop += SampleDrop;
                     _Buttons[y][x].Name = "p" + y + "_" + x;
-                   
-
-
+                    _Buttons[y][x].PreviewMouseRightButtonDown += Pad_PreviewMouseLeftButtonDown;
+                    _Buttons[y][x].Content = null;
                     PadsGrid.Children.Add(_Buttons[y][x]);
 
-                    Grid.SetRow(_Buttons[y][x], y);
+                    Grid.SetRow(_Buttons[y][x], y+1);
                     Grid.SetColumn(_Buttons[y][x], x);
                 }
             }
@@ -90,13 +90,28 @@ namespace KIsabelSampleLibrary.Controls
                 int[] yx = ((Button)sender).Name.Substring(1).Split("_").Select(t => int.Parse(t)).ToArray();
 
                 _Samples[yx[0]][yx[1]] = sample;
-                _Buttons[yx[0]][yx[1]].Content = sample.filename;
+                _Buttons[yx[0]][yx[1]].Content = sample;
 
                 return;
             }
 
-            
+        }
 
+        private void Pad_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Button parent = (Button)sender;
+
+            if (parent.Content == null)
+            {
+                return;
+            }
+
+            object data2 = new string[] { (parent.Content as Sample).GetFullAbsolutePath(App.Services.Samples().GetFolders()) };
+            DataObject data = new DataObject(DataFormats.FileDrop, data2);
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(parent, data, DragDropEffects.Copy);
+            }
         }
 
         private Sample[][] _Samples;
