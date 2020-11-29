@@ -5,18 +5,20 @@ using System.Linq;
 
 namespace KIsabelSampleLibrary.Services
 {
+    public enum AudioDriverType
+    {
+        WaveOut,
+        DirectSoundOut,
+        WASAPI,
+        ASIO
+    }
+
     public class AudioService
     {
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(AudioService));
 
-        public enum AudioDriverType
-        {
-            WaveOut,
-            DirectSoundOut,
-            WASAPI,
-            ASIO
-        }
+        
 
         private SettingsService Settings { get; set; }
 

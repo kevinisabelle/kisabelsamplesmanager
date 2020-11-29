@@ -3,12 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KIsabelSampleLibrary.Controls"
+        xmlns:local="clr-namespace:KIsabelSampleLibrary.Controls" 
+        xmlns:Extensions="clr-namespace:KIsabelSampleLibrary.Extensions"
+        xmlns:Services="clr-namespace:KIsabelSampleLibrary.Services"
         mc:Ignorable="d"
         Title="Settings" Height="650" Width="600" WindowStartupLocation="CenterOwner">
     <Grid Margin="10">
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="33"/>
             <RowDefinition Height="33"/>
             <RowDefinition/>
             <RowDefinition Height="50"/>
@@ -19,16 +24,24 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0">Audio device</Label>
+        <Label Grid.Row="0">Audio Type</Label>
+        <ComboBox Height="20" Grid.Column="1" Name="CboAudioDeviceType"  SelectedValuePath="Value" DisplayMemberPath="DisplayName" 
+          ItemsSource="{Extensions:EnumToItemsSource {x:Type Services:AudioDriverType}}" />
 
-        <Label Grid.Row="1">Samples locations</Label>
-        <StackPanel Grid.Column="1" Grid.Row="1">
+        <Label Grid.Row="1">Audio device</Label>
+        <ComboBox Grid.Column="1" Height="20" Grid.Row="1" Name="CboDeviceId" />
+
+        <Label Grid.Row="2">Auto play samples</Label>
+        <CheckBox Margin="6" Grid.Column="1" Grid.Row="2" Name="ChkAutoPlay" />
+
+        <Label Grid.Row="4">Samples locations</Label>
+        <StackPanel Grid.Column="1" Grid.Row="4">
             <Button Name="BtnAddFolder" Click="BtnAddFolder_Click">Add</Button>
             <StackPanel  Name="SamplesFoldersPanel" >
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Margin="190,10,0,10" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Width="200">
+        <StackPanel Margin="190,10,0,10" HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="0" Grid.Row="100" Grid.ColumnSpan="2" Width="200">
             <Button Width="100" Click="Button_Click" >OK</Button>
             <Button Width="100" >Cancel</Button>
         </StackPanel>

@@ -10,17 +10,32 @@ namespace KIsabelSampleLibrary.Entity
     public class Settings
     {
         
-        public string AudioInterface { get; set; }
-
+       
         public Guid DirectOutDeviceId { get; set; }
-        
+
+        public Guid WaveOutDeviceId { get; set; }
+
+        public Guid WASAPIDeviceId { get; set; }
+
+        public Guid ASIODeviceId { get; set; }
+
+        public Guid MidiInputDeviceId { get; set; }
+
         public AudioDriverType AudioDriver { get; set; }
+
+
+        public bool AutoplaySamplesOnClick { get; set; }
+
+        
+
         
         public Settings()
         {
           
             AudioDriver = AudioDriverType.DirectSoundOut;
             DirectOutDeviceId = Guid.Empty;
+            AutoplaySamplesOnClick = false;
+
         }
 
        

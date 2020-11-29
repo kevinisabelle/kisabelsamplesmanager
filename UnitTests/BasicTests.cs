@@ -17,10 +17,10 @@ namespace UnitTests
         {
             ServicesManager services = new ServicesManager();
             services.Settings().LoadSettings();
-            services.Settings().Settings.AudioInterface = "Interface #1";
+            services.Settings().Settings.AudioDriver = AudioDriverType.ASIO;
             services.Settings().SaveSettings();
             services.Settings().LoadSettings();
-            Assert.AreEqual(services.Settings().Settings.AudioInterface, "Interface #1");
+            Assert.AreEqual(services.Settings().Settings.AudioDriver, AudioDriverType.ASIO);
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace UnitTests
         {
             ServicesManager services = new ServicesManager();
           
-            services.Settings().Settings.AudioDriver = AudioService.AudioDriverType.DirectSoundOut;
+            services.Settings().Settings.AudioDriver = AudioDriverType.DirectSoundOut;
             services.Settings().SaveSettings();
         }
 
@@ -96,7 +96,7 @@ namespace UnitTests
 
             ServicesManager services = new ServicesManager();
         
-            services.Settings().Settings.AudioDriver = AudioService.AudioDriverType.DirectSoundOut;
+            services.Settings().Settings.AudioDriver = AudioDriverType.DirectSoundOut;
             services.Settings().SaveSettings();
 
             services.Samples().RefreshDatabase();

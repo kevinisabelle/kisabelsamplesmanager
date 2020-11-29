@@ -32,8 +32,23 @@ namespace KIsabelSampleLibrary.Controls
             InitializeComponent();
             this.mainWindow = mainWindow;
             settings = App.Services.Settings();
-            folders = App.Services.Samples().GetFolders();
+
+            RefreshUIFromModel();
+
+            
             RefreshFolders();
+        }
+
+        private void RefreshUIFromModel()
+        {
+            folders = App.Services.Samples().GetFolders();
+            CboAudioDeviceType.SelectedValue = settings.Settings.AudioDriver.GetHashCode();
+            RefreshDevicesValues();
+        }
+
+        private void RefreshDevicesValues()
+        {
+
         }
 
         private void UpdateSettingsFromUIAndSave()
@@ -44,6 +59,7 @@ namespace KIsabelSampleLibrary.Controls
                 App.Services.Db().SamplesFolders.Update(folder);
                 App.Services.Db().SaveChanges();
             }
+
             settings.SaveSettings();
 
         }
@@ -82,50 +98,73 @@ namespace KIsabelSampleLibrary.Controls
 
         private Panel CreateLibFolderPanel(SamplesFolder folder)
         {
-            StackPanel panel = new StackPanel();
+            Grid masterPanel = new Grid();
+            masterPanel.Margin = new Thickness(5, 5, 5, 5);
 
-            Label label = new Label();
-            label.Content = folder.Id + " - Base Path";
-            panel.Children.Add(label);
+            masterPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100) });
+            masterPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            panel.Orientation = Orientation.Vertical;
-            panel.Margin = new Thickness(5, 5, 5, 5);
-            
-          
-            Binding pathBinding = new Binding("BasePath");
-            pathBinding.Source = folder;
+            masterPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+            masterPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+            masterPanel.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
+            Label LblBasePath = new Label();
+            LblBasePath.Content = folder.Id + " - Base Path";
+            masterPanel.Children.Add(LblBasePath);
 
             TextBox txtBasePath = new TextBox();
             txtBasePath.Name = "txtBasePath";
-            //txtBasePath.Text = pathBinding;
-            txtBasePath.SetBinding(TextBox.TextProperty, pathBinding);
 
-            panel.Children.Add(txtBasePath);
+            masterPanel.Children.Add(txtBasePath);
 
-            Label labelName = new Label();
-            labelName.Content = "Name";
-            panel.Children.Add(labelName);
+            Label LblName = new Label();
+            LblName.Content = "Name";
+            masterPanel.Children.Add(LblName);
 
             TextBox txtName = new TextBox();
             txtName.Name = "txtName";
             txtName.Text = folder.Name;
 
-           
-            panel.Children.Add(txtName);
+            masterPanel.Children.Add(txtName);
 
-            Label labelNote = new Label();
-            labelNote.Content = "Note";
-            panel.Children.Add(labelNote);
+            Label lblNote = new Label();
+            lblNote.Content = "Note";
+            masterPanel.Children.Add(lblNote);
 
             TextBox txtNote = new TextBox();
             txtNote.Name = "txtNote";
             txtNote.Text = folder.Notes;
-            panel.Children.Add(txtNote);
-            
-            Separator sep = new Separator();
-            panel.Children.Add(sep);
+            masterPanel.Children.Add(txtNote);
 
-            return panel;
+            // Bindings
+            Binding pathBinding = new Binding("BasePath");
+            pathBinding.Source = folder;
+            txtBasePath.SetBinding(TextBox.TextProperty, pathBinding);
+
+            Binding nameBinding = new Binding("Name");
+            nameBinding.Source = folder;
+            txtName.SetBinding(TextBox.TextProperty, nameBinding);
+
+            Binding noteBinding = new Binding("Notes");
+            noteBinding.Source = folder;
+            txtNote.SetBinding(TextBox.TextProperty, noteBinding);
+
+            // Set positions in grid
+            Grid.SetColumn(LblBasePath, 0);
+            Grid.SetColumn(LblName, 0);
+            Grid.SetColumn(lblNote, 0);
+
+            Grid.SetColumn(txtBasePath, 1);
+            Grid.SetColumn(txtName, 1);
+            Grid.SetColumn(txtNote, 1);
+
+            Grid.SetRow(LblName, 1);
+            Grid.SetRow(txtName, 1);
+
+            Grid.SetRow(lblNote, 2);
+            Grid.SetRow(txtNote, 2);
+
+            return masterPanel;
         }
     }
 }
