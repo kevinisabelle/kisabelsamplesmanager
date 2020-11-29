@@ -8,6 +8,8 @@ namespace KIsabelSampleLibrary.Services
 {
     public class ServicesManager
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(ServicesManager));
+
         private SamplesService _Samples { get; set; }
         private SettingsService _Settings { get; set; }
         private DatabaseContext _dbContext { get; set; }
@@ -16,12 +18,14 @@ namespace KIsabelSampleLibrary.Services
 
         public ServicesManager()
         {
+            log.Info("Starting services...");
             _dbContext = new DatabaseContext();
             _dbContext.Database.Migrate();
             _Settings = new SettingsService();
             _Samples = new SamplesService(_dbContext, _Settings);
             _audio = new AudioService(_Settings);
-            
+            log.Info("Dont starting servicess.");
+
         }
 
         public SamplesService Samples()

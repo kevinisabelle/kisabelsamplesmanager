@@ -10,6 +10,9 @@ namespace KIsabelSampleLibrary.Services
 {
     public class AudioFileHelper
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(AudioFileHelper));
+
+
         public static Sample AnalyzeFile(string path, SamplesFolder samplesBasePath)
         {
             try
@@ -36,7 +39,7 @@ namespace KIsabelSampleLibrary.Services
                 }
             } catch (Exception e)
             {
-                Console.WriteLine(e);
+                log.Error(e);
             }
 
             return null;

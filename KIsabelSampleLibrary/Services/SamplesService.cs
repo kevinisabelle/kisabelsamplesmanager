@@ -11,6 +11,9 @@ namespace KIsabelSampleLibrary.Services
     
     public class SamplesService
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SamplesService));
+
+
         public delegate void UpdateFeedback(Sample sample, long currentCount, long totalCount, SamplesFolder folder, int folderCurrentCount, int folderTotalCount, RefreshDataStatus threadstatus);
 
         private DatabaseContext DbContext { get; set; }

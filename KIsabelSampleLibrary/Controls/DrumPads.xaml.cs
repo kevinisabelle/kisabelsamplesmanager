@@ -15,6 +15,9 @@ namespace KIsabelSampleLibrary.Controls
 {
     public partial class DrumPads : UserControl
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(DrumPads));
+
+
         private readonly int rows = 16;
         private readonly int cols = 1;
 

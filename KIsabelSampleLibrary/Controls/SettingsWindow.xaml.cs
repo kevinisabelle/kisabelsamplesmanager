@@ -21,6 +21,8 @@ namespace KIsabelSampleLibrary.Controls
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SettingsWindow));
+
         SettingsService settings { get; set; }
         MainWindow mainWindow { get; set; }
         List<SamplesFolder> folders { get; set; }

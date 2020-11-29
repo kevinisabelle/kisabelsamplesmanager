@@ -6,6 +6,9 @@ namespace KIsabelSampleLibrary.Services
 {
     public class SettingsService
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SettingsService));
+
+
         public string settingsfile = "settings.json";
         public Settings Settings {get; set; }
 

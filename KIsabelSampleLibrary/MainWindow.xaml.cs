@@ -17,6 +17,8 @@ namespace KIsabelSampleLibrary
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
+
         SettingsWindow settingswindow { get; set; }
 
         public MainWindow()

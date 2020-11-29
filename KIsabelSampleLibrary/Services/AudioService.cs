@@ -7,6 +7,9 @@ namespace KIsabelSampleLibrary.Services
 {
     public class AudioService
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(AudioService));
+
         public enum AudioDriverType
         {
             WaveOut,
@@ -47,6 +50,8 @@ namespace KIsabelSampleLibrary.Services
             {
                 return;
             }
+
+            log.Debug("Playing sample: " + sample);
 
             DirectSoundOut device = GetOutDevice();
 

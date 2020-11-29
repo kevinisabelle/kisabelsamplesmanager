@@ -14,6 +14,8 @@ namespace KIsabelSampleLibrary.Controls
 {
     public partial class Player : UserControl
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(Player));
+
         public Player()
         {
             InitializeComponent();
