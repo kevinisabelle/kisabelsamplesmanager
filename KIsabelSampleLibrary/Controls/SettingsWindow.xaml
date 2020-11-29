@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0">Audio Type</Label>
-        <ComboBox Height="20" Grid.Column="1" Name="CboAudioDeviceType"  SelectedValuePath="Value" DisplayMemberPath="DisplayName" 
+        <ComboBox Height="20" SelectionChanged="CboAudioDeviceType_SelectionChanged" Grid.Column="1" Name="CboAudioDeviceType"  SelectedValuePath="Key" DisplayMemberPath="Value" 
           ItemsSource="{Extensions:EnumToItemsSource {x:Type Services:AudioDriverType}}" />
 
         <Label Grid.Row="1">Audio device</Label>

@@ -1,5 +1,6 @@
 ﻿using KIsabelSampleLibrary.Entity;
 using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,22 +29,33 @@ namespace KIsabelSampleLibrary.Services
             settings.Settings.DirectOutDeviceId = DirectSoundOut.DSDEVID_DefaultPlayback;
         }
 
-        public List<DirectSoundDeviceInfo> GetInterfacesForSelectedDriver()
+
+        public static List<KeyValuePair<string, string>> GetAvailableInterfaces(AudioDriverType driverType)
         {
-            switch (Settings.Settings.AudioDriver)
+            switch (driverType)
             {
                 case AudioDriverType.DirectSoundOut:
 
-                    return DirectSoundOut.Devices.ToList();
-                    
+                    return DirectSoundOut.Devices.Select(d => new KeyValuePair<string, string>(d.Guid.ToString(), d.Description)).ToList();
+
+                case AudioDriverType.ASIO:
+                    return AsioOut.GetDriverNames().Select(d => new KeyValuePair<string, string>(d, d)).ToList();
+
             }
 
-            return new List<DirectSoundDeviceInfo>();
+            return new List<KeyValuePair<string, string>>();
         }
 
-        public DirectSoundOut GetOutDevice()
+        
+
+        public DirectSoundOut GetDirectSoundOutDevice(Guid deviceId)
         {
-            return new DirectSoundOut(Settings.Settings.DirectOutDeviceId);
+            return new DirectSoundOut(deviceId);
+        }
+
+        public AsioOut GetAsioDevice(string driverName)
+        {
+            return new AsioOut(driverName);
         }
 
         public void PlaySample(Sample sample, List<SamplesFolder> folders)
@@ -55,7 +67,7 @@ namespace KIsabelSampleLibrary.Services
 
             log.Debug("Playing sample: " + sample);
 
-            DirectSoundOut device = GetOutDevice();
+            DirectSoundOut device = GetDirectSoundOutDevice(Settings.Settings.DirectOutDeviceId);
 
             WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
             WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);

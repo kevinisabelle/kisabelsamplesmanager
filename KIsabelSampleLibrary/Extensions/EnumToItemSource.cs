@@ -19,7 +19,7 @@ namespace KIsabelSampleLibrary.Extensions
         {
             return Enum.GetValues(_type)
                 .Cast<object>()
-                .Select(e => new { Value = (int)e, DisplayName = e.ToString() });
+                .Select(e => new KeyValuePair<int, string>((int)e, e.ToString()));
         }
     }
 }

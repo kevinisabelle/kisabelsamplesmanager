@@ -46,9 +46,13 @@ namespace KIsabelSampleLibrary.Controls
             RefreshDevicesValues();
         }
 
+
+
         private void RefreshDevicesValues()
         {
-
+            settings.Settings.AudioDriver = (AudioDriverType)((KeyValuePair<int, string>)CboAudioDeviceType.SelectedItem).Key;
+            CboDeviceId.ItemsSource = AudioService.GetAvailableInterfaces(settings.Settings.AudioDriver);
+            
         }
 
         private void UpdateSettingsFromUIAndSave()
@@ -62,6 +66,12 @@ namespace KIsabelSampleLibrary.Controls
 
             settings.SaveSettings();
 
+        }
+
+
+        private void CboAudioDeviceType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshDevicesValues();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -166,5 +176,6 @@ namespace KIsabelSampleLibrary.Controls
 
             return masterPanel;
         }
+
     }
 }
