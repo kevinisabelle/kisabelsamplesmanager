@@ -1,7 +1,9 @@
 ﻿using KIsabelSampleLibrary.Entity;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,7 +50,7 @@ namespace KIsabelSampleLibrary.Controls
             {
                 LblFilename.Text = "";
                 TxtTags.Text = "";
-                TxtGenres.Text = "";
+                TxtGenres.SelectedItems = new List<string>();
                 LblDuration.Content = "N/A";
                 ImgSoundImage.Source = null;
                 return;
@@ -58,7 +60,7 @@ namespace KIsabelSampleLibrary.Controls
 
             LblFilename.Text = sampleFullPath;
             TxtTags.Text = _Sample.tags;
-            TxtGenres.Text = _Sample.genres;
+            TxtGenres.SelectedItems = _Sample.genres?.Split("|").ToList();
             LblDuration.Content = _Sample.lengthMs + "ms";
 
             if (File.Exists(sampleFullPath))
