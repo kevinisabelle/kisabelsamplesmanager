@@ -66,6 +66,15 @@ namespace KIsabelSampleLibrary.Controls
 
                     Grid.SetRow(_Buttons[y][x], y+2);
                     Grid.SetColumn(_Buttons[y][x], x);
+
+                    TextBox PadNumber = new TextBox();
+                    PadNumber.HorizontalAlignment = HorizontalAlignment.Left;
+                    PadNumber.Width = 30;
+                    PadNumber.Text = "#" + (y + 1);
+                    PadsGrid.Children.Add(PadNumber);
+                    Grid.SetRow(PadNumber, y + 2);
+                    Grid.SetColumn(PadNumber, x);
+
                 }
             }
         }
