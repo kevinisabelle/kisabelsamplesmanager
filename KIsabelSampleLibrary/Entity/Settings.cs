@@ -17,7 +17,7 @@ namespace KIsabelSampleLibrary.Entity
 
         public Guid WASAPIDeviceId { get; set; }
 
-        public Guid ASIODeviceId { get; set; }
+        public string ASIODeviceId { get; set; }
 
         public Guid MidiInputDeviceId { get; set; }
 

@@ -42,6 +42,8 @@ namespace KIsabelSampleLibrary.Controls
             folders = App.Services.Samples().GetFolders();
             CboAudioDeviceType.SelectedValue = settings.Settings.AudioDriver.GetHashCode();
             RefreshDevicesValues();
+
+            ChkAutoPlay.IsChecked = settings.Settings.AutoplaySamplesOnClick;
         }
 
         private void RefreshDevicesValues()
@@ -61,11 +63,12 @@ namespace KIsabelSampleLibrary.Controls
                 App.Services.Db().SaveChanges();
             }
 
+            settings.Settings.AutoplaySamplesOnClick = ChkAutoPlay.IsChecked.Value;
             settings.Settings.AudioDriver = (AudioDriverType)((KeyValuePair<int, string>)CboAudioDeviceType.SelectedItem).Key;
 
             if (settings.Settings.AudioDriver == AudioDriverType.ASIO)
             {
-                settings.Settings.ASIODeviceId = Guid.Parse(CboDeviceId.SelectedValue.ToString());
+                settings.Settings.ASIODeviceId = CboDeviceId.SelectedValue.ToString();
             } 
             else
             {

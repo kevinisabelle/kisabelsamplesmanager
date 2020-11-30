@@ -29,7 +29,7 @@ namespace KIsabelSampleLibrary.Services
 
         public void SaveSettings()
         {
-            File.WriteAllText(settingsfile, JsonConvert.SerializeObject(Settings));
+            File.WriteAllText(settingsfile, JsonConvert.SerializeObject(Settings,Formatting.Indented));
         }
     }
 }

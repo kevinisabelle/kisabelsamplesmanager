@@ -45,6 +45,11 @@ namespace KIsabelSampleLibrary.Services
             return new DirectSoundOut(deviceId);
         }
 
+        public AsioOut GetAsioOutDevice(string deviceId)
+        {
+            return new AsioOut(deviceId);
+        }
+
         public AsioOut GetAsioDevice(string driverName)
         {
             return new AsioOut(driverName);
@@ -59,6 +64,22 @@ namespace KIsabelSampleLibrary.Services
 
             log.Debug("Playing sample: " + sample);
 
+            switch (Settings.Settings.AudioDriver)
+            {
+                case AudioDriverType.ASIO:
+                    PlayAsioSample(sample, folders);
+                    break;
+
+                case AudioDriverType.DirectSoundOut:
+                    PlayDirectSoundSample(sample, folders);
+                    break;
+            }
+
+            
+        }
+
+        private void PlayDirectSoundSample(Sample sample, List<SamplesFolder> folders)
+        {
             DirectSoundOut device = GetDirectSoundOutDevice(Settings.Settings.DirectOutDeviceId);
 
             WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
@@ -68,5 +89,20 @@ namespace KIsabelSampleLibrary.Services
 
             device.Play();
         }
+
+        private void PlayAsioSample(Sample sample, List<SamplesFolder> folders)
+        {
+            AsioOut device = GetAsioDevice(Settings.Settings.ASIODeviceId);
+
+            WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
+            WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
+            volumeStream.Volume = 1;
+            device.Init(mainOutputStream);
+
+            device.Play();
+        }
+
+        
+
     }
 }
