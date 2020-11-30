@@ -8,18 +8,13 @@ namespace KIsabelSampleLibrary.Services
 {
     public enum AudioDriverType
     {
-        WaveOut,
         DirectSoundOut,
-        WASAPI,
         ASIO
     }
 
     public class AudioService
     {
-
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(AudioService));
-
-        
 
         private SettingsService Settings { get; set; }
 
@@ -28,7 +23,6 @@ namespace KIsabelSampleLibrary.Services
             Settings = settings;
             settings.Settings.DirectOutDeviceId = DirectSoundOut.DSDEVID_DefaultPlayback;
         }
-
 
         public static List<KeyValuePair<string, string>> GetAvailableInterfaces(AudioDriverType driverType)
         {
@@ -45,8 +39,6 @@ namespace KIsabelSampleLibrary.Services
 
             return new List<KeyValuePair<string, string>>();
         }
-
-        
 
         public DirectSoundOut GetDirectSoundOutDevice(Guid deviceId)
         {
@@ -75,8 +67,6 @@ namespace KIsabelSampleLibrary.Services
             device.Init(volumeStream);
 
             device.Play();
-
-            //device.Stop();
         }
     }
 }

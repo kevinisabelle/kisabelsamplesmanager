@@ -34,8 +34,6 @@ namespace KIsabelSampleLibrary.Controls
             settings = App.Services.Settings();
 
             RefreshUIFromModel();
-
-            
             RefreshFolders();
         }
 
@@ -46,12 +44,11 @@ namespace KIsabelSampleLibrary.Controls
             RefreshDevicesValues();
         }
 
-
-
         private void RefreshDevicesValues()
         {
             settings.Settings.AudioDriver = (AudioDriverType)((KeyValuePair<int, string>)CboAudioDeviceType.SelectedItem).Key;
             CboDeviceId.ItemsSource = AudioService.GetAvailableInterfaces(settings.Settings.AudioDriver);
+            CboDeviceId.SelectedValue = settings.Settings.AudioDriver == AudioDriverType.ASIO ? settings.Settings.ASIODeviceId.ToString() : settings.Settings.DirectOutDeviceId.ToString();
             
         }
 
@@ -64,10 +61,19 @@ namespace KIsabelSampleLibrary.Controls
                 App.Services.Db().SaveChanges();
             }
 
+            settings.Settings.AudioDriver = (AudioDriverType)((KeyValuePair<int, string>)CboAudioDeviceType.SelectedItem).Key;
+
+            if (settings.Settings.AudioDriver == AudioDriverType.ASIO)
+            {
+                settings.Settings.ASIODeviceId = Guid.Parse(CboDeviceId.SelectedValue.ToString());
+            } 
+            else
+            {
+                settings.Settings.DirectOutDeviceId = Guid.Parse(CboDeviceId.SelectedValue.ToString());
+            }
+            
             settings.SaveSettings();
-
         }
-
 
         private void CboAudioDeviceType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

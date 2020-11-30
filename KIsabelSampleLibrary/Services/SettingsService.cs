@@ -8,7 +8,6 @@ namespace KIsabelSampleLibrary.Services
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SettingsService));
 
-
         public string settingsfile = "settings.json";
         public Settings Settings {get; set; }
 
@@ -30,7 +29,6 @@ namespace KIsabelSampleLibrary.Services
 
         public void SaveSettings()
         {
-            
             File.WriteAllText(settingsfile, JsonConvert.SerializeObject(Settings));
         }
     }

@@ -8,11 +8,9 @@ using System.Threading;
 
 namespace KIsabelSampleLibrary.Services
 {
-    
     public class SamplesService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(SamplesService));
-
 
         public delegate void UpdateFeedback(Sample sample, long currentCount, long totalCount, SamplesFolder folder, int folderCurrentCount, int folderTotalCount, RefreshDataStatus threadstatus);
 
@@ -165,8 +163,6 @@ namespace KIsabelSampleLibrary.Services
                         paramsObject.updateFeedback.Invoke(sample, processed, total, folder, currentFolder, totalFolders, RefreshDataStatus.PROCESSING);
                     }
                 }
-
-                
 
                 samplesFiles = FindSamples(new SampleSearchModel());
 

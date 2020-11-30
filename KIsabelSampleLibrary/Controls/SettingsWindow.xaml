@@ -29,7 +29,7 @@
           ItemsSource="{Extensions:EnumToItemsSource {x:Type Services:AudioDriverType}}" />
 
         <Label Grid.Row="1">Audio device</Label>
-        <ComboBox Grid.Column="1" Height="20" Grid.Row="1" Name="CboDeviceId" />
+        <ComboBox Grid.Column="1" SelectedValuePath="Key" DisplayMemberPath="Value" Height="20" Grid.Row="1" Name="CboDeviceId" />
 
         <Label Grid.Row="2">Auto play samples</Label>
         <CheckBox Margin="6" Grid.Column="1" Grid.Row="2" Name="ChkAutoPlay" />

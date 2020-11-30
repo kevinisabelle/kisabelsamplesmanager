@@ -15,8 +15,6 @@ namespace KIsabelSampleLibrary.Entity
             {
                 return Id + " - " + Name;
             }
-
-            
         }
 
         public string Slot0 { get; set; }
