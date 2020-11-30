@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -120,6 +121,11 @@ namespace KIsabelSampleLibrary.Controls
         {
             if (slotX != null)
             {
+                if (slotX.StartsWith("."))
+                {
+                    slotX = Path.GetFullPath(slotX);
+                }
+
                 Sample sample0 = App.Services.Samples().FindSamples(new Services.SampleSearchModel()
                 {
                     query = slotX

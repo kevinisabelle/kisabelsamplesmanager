@@ -234,5 +234,11 @@ namespace KIsabelSampleLibrary
         {
             RefreshSamplesList();
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            App.Services.Audio().DisposeAllDevices();
+            
+        }
     }
 }

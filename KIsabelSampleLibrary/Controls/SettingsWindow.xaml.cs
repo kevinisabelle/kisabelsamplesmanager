@@ -72,9 +72,13 @@ namespace KIsabelSampleLibrary.Controls
             } 
             else
             {
-                settings.Settings.DirectOutDeviceId = Guid.Parse(CboDeviceId.SelectedValue.ToString());
+                if (CboDeviceId.SelectedItem != null)
+                {
+                    settings.Settings.DirectOutDeviceId = Guid.Parse(CboDeviceId.SelectedValue.ToString());
+                }
             }
-            
+
+            App.Services.Audio().DisposeAllDevices();
             settings.SaveSettings();
         }
 
@@ -87,7 +91,7 @@ namespace KIsabelSampleLibrary.Controls
         {
             UpdateSettingsFromUIAndSave();
             mainWindow.RefreshUI();
-            this.Hide();
+            this.Close();
         }
 
         private void BtnAddFolder_Click(object sender, RoutedEventArgs e)

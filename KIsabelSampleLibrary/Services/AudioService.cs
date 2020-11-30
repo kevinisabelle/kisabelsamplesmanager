@@ -1,5 +1,6 @@
 ﻿using KIsabelSampleLibrary.Entity;
 using NAudio.Wave;
+using NAudio.Wave.Asio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace KIsabelSampleLibrary.Services
         public AudioService(SettingsService settings)
         {
             Settings = settings;
-            settings.Settings.DirectOutDeviceId = DirectSoundOut.DSDEVID_DefaultPlayback;
+            //settings.Settings.DirectOutDeviceId = DirectSoundOut.DSDEVID_DefaultPlayback;
         }
 
         public static List<KeyValuePair<string, string>> GetAvailableInterfaces(AudioDriverType driverType)
@@ -38,6 +39,21 @@ namespace KIsabelSampleLibrary.Services
             }
 
             return new List<KeyValuePair<string, string>>();
+        }
+
+        public void DisposeAllDevices()
+        {
+            if (asioDevice!= null)
+            {
+                asioDevice.Dispose();
+                asioDevice = null;
+            }
+
+            if (directSoundDevice != null)
+            {
+                directSoundDevice.Dispose();
+                directSoundDevice = null;
+            }
         }
 
         public DirectSoundOut GetDirectSoundOutDevice(Guid deviceId)
@@ -78,28 +94,65 @@ namespace KIsabelSampleLibrary.Services
             
         }
 
+        private DirectSoundOut directSoundDevice = null;
+
         private void PlayDirectSoundSample(Sample sample, List<SamplesFolder> folders)
         {
-            DirectSoundOut device = GetDirectSoundOutDevice(Settings.Settings.DirectOutDeviceId);
+
+            if (directSoundDevice == null)
+            {
+                directSoundDevice = GetDirectSoundOutDevice(Settings.Settings.DirectOutDeviceId);
+            }
+
+            /*if (directSoundDevice.PlaybackState == PlaybackState.Playing)
+            {
+                directSoundDevice.Stop();
+            }*/
 
             WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
             WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
             volumeStream.Volume = 1;
-            device.Init(volumeStream);
+            directSoundDevice.Init(volumeStream);
 
-            device.Play();
+            directSoundDevice.Play();
         }
+
+        private AsioOut asioDevice = null;
 
         private void PlayAsioSample(Sample sample, List<SamplesFolder> folders)
         {
-            AsioOut device = GetAsioDevice(Settings.Settings.ASIODeviceId);
+            try
+            {
+                if (asioDevice != null)
+                {
+                    AsioDriver driver = AsioDriver.GetAsioDriverByName(asioDevice.DriverName);
+                    driver.DisposeBuffers();
+                }
 
-            WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
-            WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
-            volumeStream.Volume = 1;
-            device.Init(mainOutputStream);
+                if (asioDevice == null)
+                {
+                    asioDevice = GetAsioDevice(Settings.Settings.ASIODeviceId);
+                }
 
-            device.Play();
+                
+                /*if (asioDevice.PlaybackState == PlaybackState.Playing)
+                {
+                    asioDevice.Stop();
+                }*/
+
+
+                WaveStream mainOutputStream = new WaveFileReader(sample.GetFullPath(folders));
+                WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
+                volumeStream.Volume = 1;
+
+                asioDevice.Init(mainOutputStream);
+                // asioDevice.AutoStop = true;
+                asioDevice.Play();
+
+            }catch (Exception e)
+            {
+                log.Error(e);
+            }
         }
 
         

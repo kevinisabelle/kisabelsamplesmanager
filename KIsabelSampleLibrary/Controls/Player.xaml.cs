@@ -85,6 +85,18 @@ namespace KIsabelSampleLibrary.Controls
                 ImgSoundImage.Source = null;
             }
 
+            if (App.Services.Settings().Settings.AutoplaySamplesOnClick)
+            {
+                try
+                {
+                    App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
+            }
+
         }
 
         private void Player_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -128,7 +140,13 @@ namespace KIsabelSampleLibrary.Controls
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+            try
+            {
+                App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+            } catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         private void BtnSaveTagsGenres_Click(object sender, RoutedEventArgs e)
