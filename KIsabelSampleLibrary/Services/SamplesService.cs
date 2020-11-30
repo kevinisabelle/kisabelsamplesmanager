@@ -73,6 +73,15 @@ namespace KIsabelSampleLibrary.Services
                 result = result.Where(s => !s.isFilePresent);
             }
 
+            if (searchParameters.genres != null && searchParameters.genres.Count() > 0)
+            {
+                result = result.Where(s => s.GetGenres().Any(g => searchParameters.genres.Any(g2 => g.ToLower().Contains(g2.ToLower()))));
+            }
+
+            if (searchParameters.tags != null && searchParameters.tags.Count() > 0)
+            {
+                result = result.Where(s => s.GetTags().Any(g => searchParameters.tags.Any(g2 => g.ToLower().Contains(g2.ToLower()))));
+            }
 
             return result.ToList();
         }

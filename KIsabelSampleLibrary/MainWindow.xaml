@@ -58,10 +58,11 @@
                     <TextBox Name="TxtTags" VerticalContentAlignment="Center" Width="100"></TextBox>
                     <Label>Genres</Label>
                     <TextBox Name="TxtGenres" VerticalContentAlignment="Center" Width="100"></TextBox>
+         
                     <Label>Favorites</Label>
-                    <CheckBox Name="ChkFavorites"></CheckBox>
+                    <CheckBox Checked="ChkFavorites_Checked" Unchecked="ChkFavorites_Checked" VerticalAlignment="Center" Name="ChkFavorites"></CheckBox>
                     <Label>Missing files</Label>
-                    <CheckBox Name="ChkMissingFiles"></CheckBox>
+                    <CheckBox Checked="ChkFavorites_Checked" Unchecked="ChkFavorites_Checked"  VerticalAlignment="Center"  Name="ChkMissingFiles"></CheckBox>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="34">
                     <Button Margin="5" Click="Button_Click_3">Select All Folders</Button>

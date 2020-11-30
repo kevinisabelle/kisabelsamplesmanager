@@ -50,7 +50,7 @@ namespace KIsabelSampleLibrary.Controls
             {
                 LblFilename.Text = "";
                 TxtTags.Text = "";
-                TxtGenres.SelectedItems = new List<string>();
+                TxtGenres.Text = "";
                 LblDuration.Content = "N/A";
                 ImgSoundImage.Source = null;
                 return;
@@ -60,7 +60,7 @@ namespace KIsabelSampleLibrary.Controls
 
             LblFilename.Text = sampleFullPath;
             TxtTags.Text = _Sample.tags;
-            TxtGenres.SelectedItems = _Sample.genres?.Split("|").ToList();
+            TxtGenres.Text = _Sample.genres;
             LblDuration.Content = _Sample.lengthMs + "ms";
 
             if (File.Exists(sampleFullPath))
@@ -129,6 +129,15 @@ namespace KIsabelSampleLibrary.Controls
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+        }
+
+        private void BtnSaveTagsGenres_Click(object sender, RoutedEventArgs e)
+        {
+            Sample.genres = TxtGenres.Text;
+            Sample.tags = TxtTags.Text;
+
+            App.Services.Db().Samples.Update(Sample);
+            App.Services.Db().SaveChanges();
         }
     }
 }

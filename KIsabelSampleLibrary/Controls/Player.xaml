@@ -17,18 +17,21 @@
             <ColumnDefinition Width="150" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
-        <Button Name="BtnPlay" Click="Button_Click_1" Grid.Column="0">Play</Button>
-        <Button Name="BtnStop" Grid.Column="1">Stop</Button>
-        <controls:StringsListSelector x:Name="TxtGenres" Grid.Column="3"/>
-
-
-        <TextBox Name="TxtTags" Grid.Column="4">
+        <Button Margin="2" Name="BtnPlay" Click="Button_Click_1" Grid.Column="0">Play</Button>
+        <Button Margin="2" Name="BtnStop" Grid.Column="1">Stop</Button>
+        <TextBox Height="25" Name="TxtGenres" Grid.Column="3">
             tags
         </TextBox>
-        <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="5"></Image>
+
+        <TextBox Height="25" Name="TxtTags" Grid.Column="4">
+            tags
+        </TextBox>
+        <Button Margin="2" Name="BtnSaveTagsGenres" Grid.Column="5" Click="BtnSaveTagsGenres_Click">Save Info</Button>
+        <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="6"></Image>
         
         <Label Name="LblDuration" Grid.Row="0" Grid.Column="2">ms</Label>
-        <TextBox Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="5" TextWrapping="Wrap" FontFamily="Arial">File aoifdj asodifj aosidfj aosdifj aosdijf aosdijf aosidjf aosdijf aosidjf gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</TextBox>
+        <TextBox Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="6" TextWrapping="Wrap" FontSize="10" FontFamily="Fira Code Retina">File aoifdj asodifj aosidfj aosdifj aosdijf aosdijf aosidjf aosdijf aosidjf gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</TextBox>
          </Grid>
 </UserControl>

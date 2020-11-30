@@ -229,5 +229,10 @@ namespace KIsabelSampleLibrary
 
             SampleGroupBox.Header = "Samples (" + SamplesList.Items.Count + ")";
         }
+
+        private void ChkFavorites_Checked(object sender, RoutedEventArgs e)
+        {
+            RefreshSamplesList();
+        }
     }
 }
