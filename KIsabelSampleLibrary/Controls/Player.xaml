@@ -8,7 +8,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="34" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -32,6 +32,6 @@
         <Image Name="ImgSoundImage" Grid.Row="2" Grid.ColumnSpan="6"></Image>
         
         <Label Name="LblDuration" Grid.Row="0" Grid.Column="2">ms</Label>
-        <TextBox Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="6" TextWrapping="Wrap" FontSize="10" FontFamily="Fira Code Retina">File aoifdj asodifj aosidfj aosdifj aosdijf aosdijf aosidjf aosdijf aosidjf gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</TextBox>
+        <TextBox Name="LblFilename" Grid.Row="1" Grid.ColumnSpan="6" TextWrapping="Wrap" FontSize="12" FontFamily="Fira Code Retina">File aoifdj asodifj aosidfj aosdifj aosdijf aosdijf aosidjf aosdijf aosidjf gsodifj osdfig sodfigj sodfigj sofigj sodfijg oij name</TextBox>
          </Grid>
 </UserControl>

@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="K Isabel - Samples Db" 
         Height="450" Width="1200" 
-        
+        Background="MediumPurple"
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold">
-    <Grid Margin="10">
+    <Grid Margin="10" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*"/>
@@ -41,7 +41,7 @@
         <GroupBox Grid.Row="1" Header="Libraries">
           
             
-            <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" FontFamily="Segoe UI Historic" FontSize="12">
+            <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" FontFamily="Segoe UI Historic" FontSize="14">
                 <TreeViewItem Header="test">
                     <TreeViewItem Header="test2"></TreeViewItem>
                 </TreeViewItem>
@@ -76,7 +76,7 @@
             <ListView Name="SamplesList" 
                       MouseDoubleClick="SamplesList_MouseDoubleClick"
                       SelectionChanged="SamplesList_SelectionChanged"
-                      FontFamily="Segoe UI Historic" FontSize="12" >
+                      FontFamily="Segoe UI Historic" FontSize="14" >
                 <ListView.View>
                     <GridView >
                         <GridView.Columns>
