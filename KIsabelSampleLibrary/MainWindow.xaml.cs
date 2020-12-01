@@ -204,8 +204,8 @@ namespace KIsabelSampleLibrary
             {
                 path = pathQuery,
                 query = TxtQuery.Text == "" ? null : TxtQuery.Text,
-                genres = TxtGenres.Text == "" ? null : TxtGenres.Text.Split(" "),
-                tags = TxtTags.Text == "" ? null : TxtTags.Text.Split(" "),
+                genres = TxtGenres.Text == "" ? null : TxtGenres.Text.Split("|"),
+                tags = TxtTags.Text == "" ? null : TxtTags.Text.Split("|"),
                 favorites = ChkFavorites.IsChecked,
                 missingFiles = ChkMissingFiles.IsChecked,
             })
