@@ -64,7 +64,12 @@
                     <Label>Missing files</Label>
                     <CheckBox Checked="ChkFavorites_Checked" Unchecked="ChkFavorites_Checked"  VerticalAlignment="Center"  Name="ChkMissingFiles"></CheckBox>
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="34">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Height="34">
+                    <Label VerticalAlignment="Center">Min MS</Label>
+                    <TextBox  VerticalAlignment="Center" Width="50" Margin="2" Name="TxtMinLength"></TextBox>
+                    <Label  VerticalAlignment="Center">Max MS</Label>
+                    <TextBox Width="50" Margin="2" VerticalAlignment="Center" Name="TxtMaxLength"></TextBox>
+                    <Separator Width="10"></Separator>
                     <Button Margin="5" Click="Button_Click_3">Select All Folders</Button>
                     <Button Name="BtnReset" Width="80" Margin="5" Click="BtnReset_Click">Reset</Button>
                     <Button Name="BtnSearch" Width="80" Margin="5" Click="BtnSearch_Click">Search</Button>

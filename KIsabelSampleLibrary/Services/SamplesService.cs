@@ -83,6 +83,16 @@ namespace KIsabelSampleLibrary.Services
                 result = result.Where(s => s.GetTags().Any(g => searchParameters.tags.Any(g2 => g.ToLower().Contains(g2.ToLower()))));
             }
 
+            if (searchParameters.minLength.HasValue)
+            {
+                result = result.Where(s => s.lengthMs >= searchParameters.minLength.Value);
+            }
+
+            if (searchParameters.maxLength.HasValue)
+            {
+                result = result.Where(s => s.lengthMs <= searchParameters.maxLength.Value);
+            }
+
             return result.ToList();
         }
 

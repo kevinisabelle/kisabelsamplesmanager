@@ -110,7 +110,8 @@ namespace KIsabelSampleLibrary
             TxtGenres.Text = "";
             TxtTags.Text = "";
             ChkFavorites.IsChecked = false;
-            
+            TxtMinLength.Text = "";
+            TxtMaxLength.Text = "";
             ResetFolderSelection();
         }
 
@@ -208,6 +209,9 @@ namespace KIsabelSampleLibrary
                 tags = TxtTags.Text == "" ? null : TxtTags.Text.Split("|"),
                 favorites = ChkFavorites.IsChecked,
                 missingFiles = ChkMissingFiles.IsChecked,
+                minLength = TxtMinLength.Text == "" ? null : (int?)int.Parse(TxtMinLength.Text),
+                maxLength = TxtMaxLength.Text == "" ? null : (int?)int.Parse(TxtMaxLength.Text)
+
             })
                 .OrderBy(s => s.filename).ToList();
 

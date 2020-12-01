@@ -20,6 +20,8 @@ namespace KIsabelSampleLibrary.Services
         public bool? favorites = null;
         public bool? missingFiles = null;
         public string path = null;
+        public int? minLength = null;
+        public int? maxLength = null;
 
     }
 }
