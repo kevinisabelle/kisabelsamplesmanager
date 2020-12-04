@@ -228,6 +228,12 @@ namespace KIsabelSampleLibrary.Services
             DbContext.SaveChanges();
         }
 
+        public void SaveSample(List<Sample> sample)
+        {
+            DbContext.UpdateRange(sample);
+            DbContext.SaveChanges();
+        }
+
         public FolderTree GetFolderTree(List<SamplesFolder> folders)
         {
             FolderTree tree = new FolderTree();

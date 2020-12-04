@@ -26,27 +26,25 @@ namespace KIsabelSampleLibrary.Controls
         }
 
         public string Title { get; set; }
-
         public int MaxLength { get; set; }
+        private List<Sample> _Samples;
 
-        private Sample _Sample;
-
-        public Sample Sample
+        public List<Sample> Samples
         {
             get
             {
-                return _Sample;
+                return _Samples;
             }
             set
             {
-                _Sample = value;
+                _Samples = value;
                 RefreshUI();
             }
         }
 
         private void RefreshUI()
         {
-            if (_Sample == null)
+            if (_Samples == null || _Samples.Count() == 0)
             {
                 LblFilename.Text = "";
                 TxtTags.Text = "";
@@ -56,17 +54,39 @@ namespace KIsabelSampleLibrary.Controls
                 return;
             }
 
-            string sampleFullPath = _Sample.GetFullAbsolutePath(App.Services.Samples().GetFolders());
+            if (_Samples.Count() > 1)
+            {
+                LblFilename.Text = string.Join(',',_Samples.Select(s => s.filename));
 
-            LblFilename.Text = sampleFullPath;
-            TxtTags.Text = _Sample.tags;
-            TxtGenres.Text = _Sample.genres;
-            LblDuration.Content = _Sample.lengthMs + "ms";
+                TxtTags.Text = GetTagsTextFromSamples();
+                TxtTags.IsEnabled = IsTagsTextEnabled();
+                TxtGenres.Text = GetGenresTextFromSamples();
+                TxtGenres.IsEnabled = IsGenresTextEnabled();
 
-            if (File.Exists(sampleFullPath))
+                LblDuration.Content = _Samples.Count() + " samples";
+            }
+            else
+            {
+                Sample _Sample = _Samples[0];
+
+                string sampleFullPath = _Sample.GetFullAbsolutePath(App.Services.Samples().GetFolders());
+        
+                TxtTags.IsEnabled = true;
+                TxtGenres.IsEnabled = true;
+
+                LblFilename.Text = sampleFullPath;
+                TxtTags.Text = _Sample.tags;
+                TxtGenres.Text = _Sample.genres;
+                LblDuration.Content = _Sample.lengthMs + "ms";
+            }
+
+            Sample lastSample = _Samples.Last();
+            string sampleFullPathLast = lastSample.GetFullAbsolutePath(App.Services.Samples().GetFolders());
+
+            if (File.Exists(sampleFullPathLast))
             {
                 WaveFormRenderer renderer = new WaveFormRenderer();
-                System.Drawing.Image image = renderer.Render(sampleFullPath, new StandardWaveFormRendererSettings()
+                System.Drawing.Image image = renderer.Render(sampleFullPathLast, new StandardWaveFormRendererSettings()
                 {
                     Width = 2000,
                     PixelsPerPeak = 2,
@@ -79,7 +99,7 @@ namespace KIsabelSampleLibrary.Controls
 
                 ImgSoundImage.Stretch = Stretch.Fill;
                 ImgSoundImage.Source = GetImageStream(image);
-            } 
+            }
             else
             {
                 ImgSoundImage.Source = null;
@@ -89,26 +109,58 @@ namespace KIsabelSampleLibrary.Controls
             {
                 try
                 {
-                    App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+                    App.Services.Audio().PlaySample(_Samples.Last(), App.Services.Samples().GetFolders());
                 }
                 catch (Exception ex)
                 {
                     log.Error(ex);
                 }
             }
+        }
 
+        private string GetTagsTextFromSamples()
+        {
+            string[][] orderedUnderscoredTagsPerSample = _Samples.Select(s => s.GetTags().OrderBy(t => t).Select(t => t.ToLower()).ToArray()).ToArray();
+            string[] toStringWithTags = orderedUnderscoredTagsPerSample.Select(s => string.Join('|', s)).Where(t => t != "").ToArray();
+            string[] distinct = toStringWithTags.Distinct().ToArray();
+            return distinct.FirstOrDefault() == null ? "" : distinct.FirstOrDefault();
+        }
+
+        private bool IsTagsTextEnabled()
+        {
+            string[][] orderedUnderscoredTagsPerSample = _Samples.Select(s => s.GetTags().OrderBy(t => t).Select(t => t.ToLower()).ToArray()).ToArray();
+            string[] toStringWithTags = orderedUnderscoredTagsPerSample.Select(s => string.Join('|', s)).Where(t => t != "").ToArray();
+            string[] distinct = toStringWithTags.Distinct().ToArray();
+            return !(distinct.Length > 1);
+            
+        }
+
+        private string GetGenresTextFromSamples()
+        {
+            string[][] orderedUnderscoredGenresPerSample = _Samples.Select(s => s.GetGenres().OrderBy(t => t).Select(t => t.ToLower()).ToArray()).ToArray();
+            string[] toStringWithGenres = orderedUnderscoredGenresPerSample.Select(s => string.Join('|', s)).Where(t => t != "").ToArray();
+            string[] distinct = toStringWithGenres.Distinct().ToArray();
+            return distinct.FirstOrDefault() == null ? "" : distinct.FirstOrDefault();
+        }
+
+        private bool IsGenresTextEnabled()
+        {
+            string[][] orderedUnderscoredGenresPerSample = _Samples.Select(s => s.GetGenres().OrderBy(t => t).Select(t => t.ToLower()).ToArray()).ToArray();
+            string[] toStringWithGenres = orderedUnderscoredGenresPerSample.Select(s => string.Join('|', s)).Where(t => t != "").ToArray();
+            string[] distinct = toStringWithGenres.Distinct().ToArray();
+            return !(distinct.Length > 1);
         }
 
         private void Player_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Player parent = (Player)sender;
 
-            if (parent.Sample == null)
+            if (parent.Samples == null)
             {
                 return;
             }
 
-            object data2 = new string[] { parent.Sample.GetFullAbsolutePath(App.Services.Samples().GetFolders()) };
+            object data2 = parent.Samples.Select(s => s.GetFullAbsolutePath(App.Services.Samples().GetFolders())).ToArray();
             DataObject data = new DataObject(DataFormats.FileDrop, data2);
             if (data != null)
             {
@@ -142,7 +194,13 @@ namespace KIsabelSampleLibrary.Controls
         {
             try
             {
-                App.Services.Audio().PlaySample(_Sample, App.Services.Samples().GetFolders());
+                if (_Samples == null || _Samples.Count() > 1)
+                {
+                    return;
+                }
+
+                App.Services.Audio().PlaySample(_Samples[0], App.Services.Samples().GetFolders());
+
             } catch (Exception ex)
             {
                 log.Error(ex);
@@ -151,11 +209,34 @@ namespace KIsabelSampleLibrary.Controls
 
         private void BtnSaveTagsGenres_Click(object sender, RoutedEventArgs e)
         {
-            Sample.genres = TxtGenres.Text;
-            Sample.tags = TxtTags.Text;
+            if (TxtGenres.IsEnabled)
+            {
+                _Samples.ForEach(s =>
+                {
+                    s.genres = TxtGenres.Text;
+                });
+            }
 
-            App.Services.Db().Samples.Update(Sample);
+            if (TxtTags.IsEnabled)
+            {
+                _Samples.ForEach(s =>
+                {
+                    s.tags = TxtTags.Text;
+                });
+            }
+
+            App.Services.Db().Samples.UpdateRange(_Samples);
             App.Services.Db().SaveChanges();
+        }
+
+        private void TxtGenres_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ((Button)sender).IsEnabled = true;
+        }
+
+        private void TxtTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ((Button)sender).IsEnabled = true;
         }
     }
 }

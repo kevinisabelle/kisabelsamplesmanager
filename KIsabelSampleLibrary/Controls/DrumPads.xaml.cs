@@ -244,29 +244,36 @@ namespace KIsabelSampleLibrary.Controls
 
         private void SampleDrop(object sender, DragEventArgs e)
         {
-            
-            Sample sample = e.Data.GetData(typeof(Sample)) as Sample;
-
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            int[] yx = ((Button)sender).Name.Substring(1).Split("_").Select(t => int.Parse(t)).ToArray();
+            int[] currentyx = { yx[0], yx[1]};
 
-            if (files != null)
+            if (files == null)
             {
-                sample = App.Services.Samples().FindSamples(new Services.SampleSearchModel()
-                {
-                    query = files[0]
-                }).FirstOrDefault();
-            }
-
-            if (sample != null)
-            {
-                int[] yx = ((Button)sender).Name.Substring(1).Split("_").Select(t => int.Parse(t)).ToArray();
-
-                _Samples[yx[0]][yx[1]] = sample;
-                _Buttons[yx[0]][yx[1]].Content = sample;
-
                 return;
             }
 
+            foreach (string file in files)
+            {
+                Sample sample = App.Services.Samples().FindSamples(new Services.SampleSearchModel()
+                {
+                    query = file
+                }).FirstOrDefault();
+
+                if (sample != null)
+                {
+                    _Samples[currentyx[0]][currentyx[1]] = sample;
+                    _Buttons[currentyx[0]][currentyx[1]].Content = sample;
+                    
+                }
+
+                currentyx[0]++;
+
+                if (currentyx[0] >= _Samples.Length)
+                {
+                    break;
+                }
+            }
         }
 
         private void Pad_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -21,11 +21,14 @@
         </Grid.ColumnDefinitions>
         <Button Margin="2" Name="BtnPlay" Click="Button_Click_1" Grid.Column="0">Play</Button>
         <Button Margin="2" Name="BtnStop" Grid.Column="1">Stop</Button>
-        <TextBox Height="25" Name="TxtGenres" Grid.Column="3">
-            tags
+        <Label Grid.Column="3" Panel.ZIndex="5" FontSize="10" VerticalAlignment="Bottom" 
+               Foreground="Black" VerticalContentAlignment="Bottom" Height="12" Padding="0">Genres</Label>
+        <TextBox Height="25" Name="TxtGenres" Grid.Column="3" MouseDoubleClick="TxtGenres_MouseDoubleClick">
+            genres
         </TextBox>
-
-        <TextBox Height="25" Name="TxtTags" Grid.Column="4">
+        <Label Grid.Column="4" Panel.ZIndex="5" FontSize="10" VerticalAlignment="Bottom" 
+               Foreground="Black" VerticalContentAlignment="Bottom" Height="12" Padding="0">Tags</Label>
+        <TextBox Height="25" Name="TxtTags" Grid.Column="4" MouseDoubleClick="TxtTags_MouseDoubleClick">
             tags
         </TextBox>
         <Button Margin="2" Name="BtnSaveTagsGenres" Grid.Column="5" Click="BtnSaveTagsGenres_Click">Save Info</Button>

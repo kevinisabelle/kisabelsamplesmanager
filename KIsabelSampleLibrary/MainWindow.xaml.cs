@@ -61,7 +61,21 @@ namespace KIsabelSampleLibrary
                 return;
             }
 
-            SamplePlayer.Sample = (Sample)((ListViewItem)SamplesList.SelectedItem).Content;
+           
+            SamplePlayer.Samples = GetSelectedSamples();
+        }
+
+        private List<Sample> GetSelectedSamples()
+        {
+            List<Sample> samples = new List<Sample>();
+
+            foreach (var item in SamplesList.SelectedItems)
+            {
+                samples.Add((Sample)(((ListViewItem)item).Content));
+            }
+
+            return samples;
+
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -72,7 +86,7 @@ namespace KIsabelSampleLibrary
         private void ListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ListViewItem parent = (ListViewItem)sender;
-            object data2 = new string[] { (parent.Content as Sample).GetFullAbsolutePath(App.Services.Samples().GetFolders()) };
+            object data2 = GetSelectedSamples().Select(s => s.GetFullAbsolutePath(App.Services.Samples().GetFolders())).ToArray();
             DataObject data = new DataObject(DataFormats.FileDrop, data2);
             if (data != null)
             {
@@ -84,12 +98,15 @@ namespace KIsabelSampleLibrary
         {
             ListView listView = sender as ListView;
 
-            if (listView.SelectedItem != null)
+            if (GetSelectedSamples().Count() > 0)
             {
-                Sample sample = (listView.SelectedItem as ListViewItem).Content as Sample;
-                sample.favorite = !sample.favorite;
-                App.Services.Samples().SaveSample(sample);
-               
+                List<Sample> selected = GetSelectedSamples();
+                selected.ForEach(s =>
+                {
+                    s.favorite = !s.favorite;
+                });
+                App.Services.Samples().SaveSample(selected);
+
             }
 
             object selectedItem = listView.SelectedItem;
