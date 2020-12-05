@@ -18,6 +18,9 @@ namespace KIsabelSampleLibrary.Controls
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(DrumPads));
 
+        private Sample[][] _Samples;
+        private Button[][] _Buttons;
+        private CheckBox[][] _CheckBoxes;
 
         private readonly int rows = 16;
         private readonly int cols = 1;
@@ -48,11 +51,13 @@ namespace KIsabelSampleLibrary.Controls
             RefreshDrumKits();
             _Samples = new Sample[rows][];
             _Buttons = new Button[rows][];
+            _CheckBoxes = new CheckBox[rows][];
 
             for (int y = 0; y<rows; y++)
             {
                 _Samples[y] = new Sample[cols];
                 _Buttons[y] = new Button[cols];
+                _CheckBoxes[y] = new CheckBox[cols];
                 for (int x=0; x<cols; x++)
                 {
                     _Samples[y][x] = null;
@@ -75,6 +80,17 @@ namespace KIsabelSampleLibrary.Controls
                     PadsGrid.Children.Add(PadNumber);
                     Grid.SetRow(PadNumber, y + 2);
                     Grid.SetColumn(PadNumber, x);
+
+                    CheckBox chkSelected = new CheckBox();
+                    chkSelected.Name = "chk" + y + "_" + x;
+                    chkSelected.Margin = new Thickness(30, 3, 0, 0);
+                    chkSelected.Width = 30;
+                    chkSelected.HorizontalAlignment = HorizontalAlignment.Left;
+                    _CheckBoxes[y][x] = chkSelected;
+                    Grid.SetRow(chkSelected, y + 2);
+                    Grid.SetColumn(chkSelected, x);
+
+                    PadsGrid.Children.Add(chkSelected);
 
                 }
             }
@@ -293,9 +309,7 @@ namespace KIsabelSampleLibrary.Controls
             }
         }
 
-        private Sample[][] _Samples;
-        private Button[][] _Buttons;
-
+       
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveCurrentKit();

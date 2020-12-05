@@ -9,7 +9,7 @@
         Height="450" Width="1200" 
         Background="MediumPurple"
         WindowStartupLocation="CenterScreen" 
-        WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold">
+        WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold" Icon="/logotag1.png">
     <Grid Margin="10" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
