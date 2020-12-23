@@ -6,7 +6,7 @@
         Closed="Window_Closed"
         mc:Ignorable="d"
         Title="K Isabel - Samples Db" 
-        Height="450" Width="1200" 
+        Height="1050" Width="1200" 
         Background="MediumPurple"
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold" Icon="/logotag1.png">
@@ -36,17 +36,12 @@
             <Button Height="30" Click="Button_Click_4">Remove missing samples</Button>
         </StackPanel>
         
-        
-
         <GroupBox Grid.Row="1" Header="Libraries">
-          
-            
             <TreeView Name="LibraryTreeView" SelectedItemChanged="LibraryTreeView_SelectedItemChanged" FontFamily="Segoe UI Historic" FontSize="14">
                 <TreeViewItem Header="test">
                     <TreeViewItem Header="test2"></TreeViewItem>
                 </TreeViewItem>
             </TreeView>
-            
         </GroupBox>
         
         <GroupBox FontSize="12" Grid.Column="1" Grid.Row="0" Header="Search">
@@ -75,8 +70,8 @@
                     <Button Name="BtnSearch" Width="80" Margin="5" Click="BtnSearch_Click">Search</Button>
                 </StackPanel>
             </StackPanel>
-           
         </GroupBox>
+        
         <GroupBox Name="SampleGroupBox" Header="Samples" Grid.Column="1" Grid.Row="1">
             <ListView Name="SamplesList" 
                       MouseDoubleClick="SamplesList_MouseDoubleClick"

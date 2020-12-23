@@ -41,8 +41,10 @@
         </ToolBar>
         
         <ToolBar Grid.Row="1">
-            <Button Name="BtnLoadKit" Width="60" Click="BtnLoadKit_Click">Load</Button>
             <ComboBox Name="CboKits" Width="230"></ComboBox>
+            <Separator></Separator>
+            <Button Name="BtnLoadKit" Width="60" Click="BtnLoadKit_Click">Load</Button>
+            <Separator></Separator>
             <Button Name="BtnSave" Width="60" Click="BtnSave_Click">Save</Button>
         </ToolBar>
         
