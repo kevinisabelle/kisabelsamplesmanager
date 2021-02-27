@@ -19,6 +19,7 @@ namespace KIsabelSampleLibrary.Services
 
         private SettingsService Settings { get; set; }
 
+
         public AudioService(SettingsService settings)
         {
             Settings = settings;

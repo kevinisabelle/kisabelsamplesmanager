@@ -26,12 +26,32 @@ namespace KIsabelSampleLibrary.Entity
 
         public bool AutoplaySamplesOnClick { get; set; }
 
-        
+        public List<string> MidiInputNotes { get; set; }
 
         
         public Settings()
         {
-          
+            MidiInputNotes = new List<string>()
+            {
+                "C3",
+                "C#3",
+                "D3",
+                "D#3",
+                "E3",
+                "F3",
+                "F#3",
+                "G3",
+
+                "C4",
+                "C#4",
+                "D4",
+                "D#4",
+                "E4",
+                "F4",
+                "F#4",
+                "G4",
+            };
+
             AudioDriver = AudioDriverType.DirectSoundOut;
             DirectOutDeviceId = Guid.Empty;
             AutoplaySamplesOnClick = false;
