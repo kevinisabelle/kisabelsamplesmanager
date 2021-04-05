@@ -39,7 +39,7 @@ namespace KIsabelSampleLibrary.Services
                 }
             } catch (Exception e)
             {
-                log.Error(e);
+                log.Error($"Error reading wave file: {path}", e);
             }
 
             return null;

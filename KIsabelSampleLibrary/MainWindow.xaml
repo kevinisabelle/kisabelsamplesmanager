@@ -97,7 +97,7 @@
 
         <StackPanel Margin="10"  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2">
            
-            <Controls:DrumPads Height="400" />
+            <Controls:DrumPads Height="500" />
         </StackPanel>
         <TextBlock Name="TxtLog" Grid.Row="3" Background="Black" Foreground="LightGreen" Grid.ColumnSpan="3" Grid.Column="0" TextWrapping="Wrap" FontSize="12" FontFamily="Fira Code Medium" Margin="5,5,5,5" Grid.RowSpan="2">
             Logs
