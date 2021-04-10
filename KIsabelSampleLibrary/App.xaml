@@ -82,14 +82,38 @@
         <css:StyleSheet x:Key="inlineStyle" xml:space="preserve">
         <css:StyleSheet.Content>
           <![CDATA[
-            /* Theme colors */
+            /* Default Style */
+            /* 
             $color1: #3d0066;
             $color2: #510087;
             $color3: #5c0099;
             $color4: #fdc500;
             $color5: #ffd500;
             $colorLight: #fff;
-            $colorDark: #000;
+            $colorDark: #000; 
+            */
+            
+            /* Marine Style */
+            
+            $color1: #360568;
+            $color2: #5b2a86;
+            $color3: #7785ac;
+            $color4: #9ac6c5;
+            $color5: #a5e6ba;
+            $colorLight: #f3ffe1;
+            $colorDark: #352d39;
+            
+            
+            /* Fire Style */
+            /*
+            $color1: #370617;
+            $color2: #6a040f;
+            $color3: #e85d04;
+            $color4: #f48c06;
+            $color5: #faa307;
+            $colorLight: #ffba08;
+            $colorDark: #03071e;
+             */
                         
             $background-color: $color1;
             
@@ -159,6 +183,12 @@
                 
                 TextBlock {
                     Foreground: $color5;
+                }
+            
+                Button {
+                    BorderBrush: $color1;
+                    Foreground: $color5;
+                    Background: $color2;
                 }
             
                 StackPanel {
