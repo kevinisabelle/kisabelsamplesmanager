@@ -28,14 +28,14 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ToolBar>
+        <ToolBar ToolBarTray.IsLocked="True">
             <Label FontWeight="Bold" FontSize="14" VerticalAlignment="Center">Drum Kit</Label>
             <Label Name="LblKitId" Width="50" VerticalAlignment="Center"></Label>
             <TextBox Name="TxtKitName" Width="200">N/A</TextBox>
             <Button Name="BtnAddNew" Click="BtnAddNew_Click">+</Button>
         </ToolBar>
 
-        <ToolBar Grid.Row="1">
+        <ToolBar Grid.Row="1"  ToolBarTray.IsLocked="True">
             <ComboBox Name="CboKits" Width="203"></ComboBox>
             <Separator></Separator>
             <Button Name="BtnLoadKit" Width="60" Click="BtnLoadKit_Click">Load</Button>

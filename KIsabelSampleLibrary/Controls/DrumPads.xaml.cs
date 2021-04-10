@@ -76,6 +76,8 @@ namespace KIsabelSampleLibrary.Controls
                     TextBox PadNumber = new TextBox();
                     PadNumber.HorizontalAlignment = HorizontalAlignment.Left;
                     PadNumber.Width = 30;
+                    PadNumber.Height = 15;
+                    PadNumber.BorderThickness = new Thickness(0);
                     PadNumber.Text = "#" + (y + 1);
                     PadsGrid.Children.Add(PadNumber);
                     Grid.SetRow(PadNumber, y + 2);

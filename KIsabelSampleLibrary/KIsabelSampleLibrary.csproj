@@ -4,7 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>logotag1purpleSquare2.ico</ApplicationIcon>
+    <ApplicationIcon>logotag1purplesquare2glow_1C9_icon.ico</ApplicationIcon>
+    <StartupObject>KIsabelSampleLibrary.App</StartupObject>
+    <Version>1.2.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

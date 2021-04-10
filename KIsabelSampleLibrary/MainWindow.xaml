@@ -13,17 +13,17 @@
         xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
         xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
         cssWPF:Css.StyleSheet="{StaticResource inlineStyle}">
-    <Grid Margin="10" >
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
 
         <TextBlock Margin="10" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="20" Grid.Row="0">
@@ -68,7 +68,7 @@
                     <Label  VerticalAlignment="Center">Max MS</Label>
                     <TextBox Width="50" Margin="2" VerticalAlignment="Center" Name="TxtMaxLength"></TextBox>
                     <Separator Width="10"></Separator>
-                    <Button Margin="5" Click="Button_Click_3">Select All Folders</Button>
+                    <Button  Margin="5" Padding="2" Width="120" Click="Button_Click_3">Select All Folders</Button>
                     <Button Name="BtnReset" Width="80" Margin="5" Click="BtnReset_Click">Reset</Button>
                     <Button Name="BtnSearch" Width="80" Margin="5" Click="BtnSearch_Click">Search</Button>
                 </StackPanel>

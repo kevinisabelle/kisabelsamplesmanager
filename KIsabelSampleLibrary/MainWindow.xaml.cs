@@ -239,8 +239,12 @@ namespace KIsabelSampleLibrary
                 ListViewItem item = new ListViewItem()
                 {
                     Content = sample,
-                    Foreground = new SolidColorBrush(sample.isFilePresent ? Colors.Black : Colors.Red),
-                    FontWeight = sample.favorite ? FontWeights.Bold : FontWeights.Normal
+                    //Foreground = new SolidColorBrush(sample.isFilePresent ? Colors.Black : Colors.Red),
+                    FontWeight = !sample.isFilePresent ? FontWeights.UltraBold : (sample.favorite ? FontWeights.Bold : FontWeights.Normal),
+                    Height = 23,
+                    Margin = new Thickness(0),
+                    Padding = new Thickness(0),
+                    BorderThickness = new Thickness(1)
                 };
 
                 item.PreviewMouseRightButtonDown += ListBox_PreviewMouseLeftButtonDown;

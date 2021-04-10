@@ -3,11 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:KIsabelSampleLibrary"
              xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+             
              StartupUri="MainWindow.xaml">
 
     
-
+    
     <Application.Resources>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#FF262E34"/>
+            <Setter Property="Foreground" Value="#FF262E34"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Width="15" Height="15">
+                                <!--                                   your color here -->
+                                <Path Width="15" Height="10"  Stroke="HotPink" StrokeThickness="3" Name="eliCheck" Data="M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0" Visibility="Collapsed"/>
+                            </Border>
+                            <TextBlock Margin="5,0,0,0"  VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}"></TextBlock>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
+        <Style TargetType="{x:Type GroupBox}">
+           
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="6" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="6" />
+                            </Grid.RowDefinitions>
+                            <Border CornerRadius="4" Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="Transparent" Background="{TemplateBinding Background}" />
+                            <Border Name="Header" Padding="3,1,3,0" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                                <ContentPresenter ContentSource="Header" RecognizesAccessKey="true" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ContentPresenter Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <Border Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="4"  BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3">
+                                <Border.OpacityMask>
+                                    <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="7">
+                                        <Binding ElementName="Header" Path="ActualWidth" />
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </Border.OpacityMask>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -17,122 +82,222 @@
         <css:StyleSheet x:Key="inlineStyle" xml:space="preserve">
         <css:StyleSheet.Content>
           <![CDATA[
-/* declare some variables */
-$background-color: #333;
-$foreground-color: #fff;
+            /* Theme colors */
+            $color1: #3d0066;
+            $color2: #510087;
+            $color3: #5c0099;
+            $color4: #fdc500;
+            $color5: #ffd500;
+            $colorLight: #fff;
+            $colorDark: #000;
+                        
+            $background-color: $color1;
+            
+            $important-bg-color: $color2;
+            $important-color: $color4;
 
-$important-bg-color: #9c1ab2;
-$important-color: #e7abf1;
+            $control-color: $color3;
+            $control-hover-color: $color4;
 
-$control-color: #666;
-$control-hover-color: #999;
-
-$font-color: #ddd;
-$control-height: 32;
+            $font-color: $color5;
+            $control-height: 32;
+            
+            $border-color: $color3;
   
-/* for all elements that are "important" */
-.important
-{
-    Background: $important-bg-color;
-}
+            /* for all elements that are "important" */
+            .important
+            {
+                Background: $important-bg-color;
+            }
 
-/* for all elements that 
-    - are jumbo elements OR 
-    - are Runs directly under a jumbo-element (workaround a bug in WPF designer if TextBlock is initialized not as attribute but as xml-node-content)
-*/
-.jumbo,
-.jumbo>Run {
-    FontSize: $control-height;
-}
+            /* for all elements that 
+                - are jumbo elements OR 
+                - are Runs directly under a jumbo-element (workaround a bug in WPF designer if TextBlock is initialized not as attribute but as xml-node-content)
+            */
+            .jumbo,
+            .jumbo>Run {
+                FontSize: $control-height;
+            }
+            
+            Window {
+                Padding: 0;
+                Margin: 0;
+            }
+    
+            Grid {
+                Background: $colorDark;
+            
+            }
+                  
+            StackPanel {
+                Spacing: 10;
+                Background: $colorDark;
+                SnapsToDevicePixels: true;
+    
+                TextBlock {
+                    Foreground: $font-color;
+                }
+            
+                Label {
+                    Foreground: $font-color;
+                }
+            
+                Button {
+                    Margin: 1;
+                    Padding: 1;
+                }
+            }
+            
+            ToolBar {
+                Spacing: 0;
+                Background: $background-color;
+                SnapsToDevicePixels: true;
+                Foreground: $color5;
+                Margin: 0;
+                BorderBrush: $border-color; 
+                BorderThickness: 1;
+                
+                TextBlock {
+                    Foreground: $color5;
+                }
+            
+                StackPanel {
+                    Background: $background-color;
+                }
+            }
+            
+            GroupBox {
+                Spacing: 10;
+                Background: $background-color;
+                SnapsToDevicePixels: true;
+                Foreground: $color5;
+                Margin: 3;
+                BorderBrush: $border-color; 
+                BorderThickness: 3;
+                
+                TextBlock {
+                    Foreground: $color5;
+                }
+            
+                StackPanel {
+                    Background: $background-color;
+                }
+            }
+            
+            
+            
+            ListView {
+                
+                Background: $background-color;
+                BorderThickness: 0;
+            
+                ListViewItem {
+                    Height: 20px;  
+                    BorderBrush: $colorDark;
+                    Background: $color1;
+                    
+                    TextBlock {
+                        Foreground: $font-color;
+                    }
+                   
+                    @Property IsMouseOver true {
+                        Background: $color1;
+                        BorderBrush: $color5;
+                        BorderThickness: 4;
+                    }
+            
+                    @Property IsSelected true {
+   
+                        BorderBrush: $color4;
+                        BorderThickness: 4;
+                        
+                    }
+                }
+            }
+            
+             GridViewColumnHeader {
+                                
+                Foreground: $font-color;
+                Background: $background-color;
+                BorderBrush: $colorDark; 
+            }
+            
+            TextBox {
+                Foreground: $color5; 
+                Background: $color2;
+                BorderBrush: $color3; 
+                BorderThickness: 1;
+            }
+            
+           
+            
+            TreeView {
+                Foreground: $font-color;
+                Background: $background-color;
+                BorderThickness: 0;
+            
+                TreeViewItem {
+                    Height: 20px;
+                }
+            }
+    
+            TextBlock {
+                Padding: 5;
+                UseLayoutRounding: true;
+                
+                Foreground: $font-color;   
 
-/* for all elements that are navigation-buttons (means a container of navigation buttons) */
-.navigation-buttons {
-    Background: #222;
-    Orientation: Horizontal;
-    FlowDirection: RightToLeft;
-    Grid.Row: 1;
+                &.important {
+                    Background: $important-bg-color;
+                    Foreground: $important-color;
+                    TextAlignment: Center;
+                }
+            }
+            
+             CheckBox {
     
-    /* for all Buttons somewhere down in a navigation-buttons container */
-    Button {
-        Margin: 5, 5, 5, 5;
+                Background: $color5;
+                Background: $font-color;
+     
+            }
     
-        /* for all Buttons following a Button in side a navigation-buttons container */
-        &~Button {
-            Margin: 0, 5, 5, 5;
-        }
-    }
-}
+            Button {
+                
+                BorderThickness: 2;
+                BorderBrush: $color1;
+            
+                Foreground: $color5;
+                Background: $color2;
+                Template: #StaticResource buttonTemplate; /* using a control template in a resource dictioanry */
+                Cursor: Hand;
+
+                @Property IsMouseOver true {
+                    Background: $color1;
+                }
+
+                @Property IsPressed true {
+                    Background: $colorDark;
+                    BorderThickness: 3;
+                }
     
-/* for all Grids */
-Grid {
-    Background: $background-color;
-}
-    
-/* for all StackPanels */                
-StackPanel {
-    Spacing: 10;
-    Background: $background-color;
-    SnapsToDevicePixels: true;
-    
-    /* for all TextBlocks somewhere down in an StackPanel */
-    TextBlock {
-        Foreground: $font-color;
-    }
-}
-    
-/* for all TextBlocks */
-TextBlock
-{
-    Padding: 5;
-    UseLayoutRounding: true;
-              
-    /* for all TextBlocks that are important */
-    &.important {
-        Background: $important-bg-color;
-        Foreground: $important-color;
-        TextAlignment: Center;
-    }
-}
-    
-/* for all Buttons */
-Button
-{
-    Height: $control-height;
-    MinWidth: 150;
-    Foreground: $foreground-color;
-    Background: $control-color;
-    Template: #StaticResource buttonTemplate; /* using a control template in a resource dictioanry */
-    Cursor: Hand;
-    
-    /* when IsMouseOver property is true, then...*/
-    @Property IsMouseOver true {
-        Background: $control-hover-color;
-    }
-    
-    /* when IsPressed property is true, then...*/
-    @Property IsPressed true {
-        Background: #333;
-        Foreground: #fff;
-    }
-    
-    
-    &.important {
-        Foreground: #fff;
-        FontWeight: Bold;
-    
-        /* when IsMouseOver property is true, then...*/
-        @Property IsMouseOver true {
-            Background: #bc2ac2;
-        }
+                &.important {
+                    Padding: 2;
+                    Marging: 4;
+
+                    @Property IsMouseOver true {
+                        Background: $color1;
+                    }
         
-        /* when IsPressed property is true, then...*/
-        @Property IsPressed true {
-            Background: $important-bg-color;
-        }
-    }
-}
+                    @Property IsPressed true {
+                        Background: $colorDark;
+                        BorderThickness: 3;
+                    }
+                }
+            }
+            
+            
     
-]]>
+        ]]>
         </css:StyleSheet.Content>
       </css:StyleSheet>
      
