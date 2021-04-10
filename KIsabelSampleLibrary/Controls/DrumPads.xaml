@@ -36,7 +36,7 @@
         </ToolBar>
 
         <ToolBar Grid.Row="1">
-            <ComboBox Name="CboKits" Width="230"></ComboBox>
+            <ComboBox Name="CboKits" Width="203"></ComboBox>
             <Separator></Separator>
             <Button Name="BtnLoadKit" Width="60" Click="BtnLoadKit_Click">Load</Button>
             <Separator></Separator>

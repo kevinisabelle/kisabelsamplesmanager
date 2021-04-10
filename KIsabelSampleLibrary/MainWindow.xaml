@@ -7,9 +7,12 @@
         mc:Ignorable="d"
         Title="K Isabel - Samples Db" 
         Height="1050" Width="1200" 
-        Background="MediumPurple"
+        
         WindowStartupLocation="CenterScreen" 
-        WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold" Icon="/logotag1.png">
+        WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold" Icon="/logotag1.png"
+        xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
+        xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
+        cssWPF:Css.StyleSheet="{StaticResource inlineStyle}">
     <Grid Margin="10" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400" />

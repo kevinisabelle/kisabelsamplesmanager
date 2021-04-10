@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using XamlCSS.WPF;
 
 namespace KIsabelSampleLibrary
 {
@@ -27,6 +28,7 @@ namespace KIsabelSampleLibrary
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
+            Css.Initialize();
 
             Services = new ServicesManager();
         }
