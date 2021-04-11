@@ -12,6 +12,7 @@
         WindowState="Maximized" FontSize="16" FontFamily="Segoe UI Semibold" Icon="/logotag1.png"
         xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
         xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
+        xmlns:util="clr-namespace:Wpf.Util"
         cssWPF:Css.StyleSheet="{StaticResource inlineStyle}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -79,17 +80,20 @@
             <ListView Name="SamplesList" 
                       MouseDoubleClick="SamplesList_MouseDoubleClick"
                       SelectionChanged="SamplesList_SelectionChanged"
+                      util:GridViewSort.AutoSort="False"
+                      IsSynchronizedWithCurrentItem="True"
                       FontFamily="Segoe UI Historic" FontSize="14" SelectionMode="Extended" >
                 <ListView.View>
                     <GridView >
                         <GridView.Columns>
-                            <GridViewColumn Header="File" Width="400" DisplayMemberBinding="{Binding Path=filename}" />
-                            <GridViewColumn Header="Length"  Width="80" DisplayMemberBinding="{Binding Path=lengthMs}" />
-                            <GridViewColumn Header="Genres" Width="100" DisplayMemberBinding="{Binding Path=genres}"/>
-                            <GridViewColumn Header="Tags" Width="100" DisplayMemberBinding="{Binding Path=tags}"/>
-                            <GridViewColumn Header="Favorite" Width="50" DisplayMemberBinding="{Binding Path=favorite}"/>
-                            <GridViewColumn Header="Exists" Width="50" DisplayMemberBinding="{Binding Path=isFilePresent}"/>
-                            <GridViewColumn Header="Path" Width="400" DisplayMemberBinding="{Binding Path=path}"/>
+                            <GridViewColumn Header="File" Width="400" DisplayMemberBinding="{Binding Path=filename}" util:GridViewSort.PropertyName="filename" />
+                            <GridViewColumn Header="Length"  Width="80" DisplayMemberBinding="{Binding Path=lengthMs}"  util:GridViewSort.PropertyName="lengthMs" />
+                            <GridViewColumn Header="Genres" Width="100" DisplayMemberBinding="{Binding Path=genres}"   util:GridViewSort.PropertyName="genres"/>
+                            <GridViewColumn Header="Tags" Width="100" DisplayMemberBinding="{Binding Path=tags}"   util:GridViewSort.PropertyName="tags"/>
+                            <GridViewColumn Header="Favorite" Width="50" DisplayMemberBinding="{Binding Path=favorite}"   util:GridViewSort.PropertyName="favorite"/>
+                            <GridViewColumn Header="Exists" Width="50" DisplayMemberBinding="{Binding Path=isFilePresent}"   util:GridViewSort.PropertyName="isFilePresent"/>
+                            <GridViewColumn Header="Path" Width="400" DisplayMemberBinding="{Binding Path=path}"   util:GridViewSort.PropertyName="path"/>
+                            <GridViewColumn Header="Added" Width="150" DisplayMemberBinding="{Binding Path=addedDate}"   util:GridViewSort.PropertyName="addedDate"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
